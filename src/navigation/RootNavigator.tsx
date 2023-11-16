@@ -19,6 +19,7 @@ import WebViewPage from '~/screens/WebViewPage';
 import BottomTabNavigator, {
   BottomTabNavigatorProps,
 } from './BottomTabNavigator';
+import ForgotPassword from '~/screens/Authentication/ForgotPassword';
 
 export type RootNavigatorProps = {
   navigate(arg0: string): unknown;
@@ -113,6 +114,18 @@ const RootNavigator = (): JSX.Element => {
         name='WebViewPage'
         component={WebViewPage}
         options={{ gestureEnabled: false }}
+      />
+      <StackNavigator.Screen
+       name='Forgot Password'
+       component={ForgotPassword}
+       options={{ 
+        gestureEnabled: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: '#ffffff',
+        },
+        headerShadowVisible: false
+      }}
       />
     </StackNavigator.Navigator>
   );

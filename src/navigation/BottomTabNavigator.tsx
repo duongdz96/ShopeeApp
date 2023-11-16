@@ -124,7 +124,6 @@ const BottomTabNavigator = (): JSX.Element => {
           name='HomeNavigator'
           component={HomeNavigator}
           options={{
-            tabBarLabel: t('Locator'),
             tabBarIcon: ({ focused }) =>
               focused ? (
                 <LottieView
@@ -168,7 +167,7 @@ const BottomTabNavigator = (): JSX.Element => {
                 <LottieView
                   source={getImage('moon2')}
                   autoPlay
-                  // loop
+                  loop
                   style={{ height: 32, width: 32 }}
                 />
               ) : (

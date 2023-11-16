@@ -9,13 +9,14 @@ import {
   Text,
   ViewStyle,
   View,
-  TextInput
+  TextInput,
 } from 'react-native';
 
 import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
+import {auth} from '../../../firebase'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -41,6 +42,17 @@ const SignUpPage = (): JSX.Element => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // const handleSignUp = () => {
+  //   auth
+  //     .createUserWithEmailAndPassword(email, password)
+  //     .then((userCredentials: { user: any; }) => {
+  //       const user = userCredentials.user;
+  //       console.log('Registered with:', user.email);
+  //     })
+  //     .catch((error: { message: any; }) => alert(error.message))
+  // }
+
   return (
     <SafeAreaView style={styleContainer}>
       <View style={styles.viewInput}>
@@ -88,7 +100,7 @@ const SignUpPage = (): JSX.Element => {
         <TextInput
          value={password}
          onChangeText={setPassword}
-         placeholder='●●●●●●●●'
+         placeholder=''
          style={styles.input}
          secureTextEntry={true}
         />
@@ -123,6 +135,7 @@ const SignUpPage = (): JSX.Element => {
            type='medium'
            icon={require('../../../assets/facebook-f-logo-2019.png')}
            style={{flex: 1,marginRight: 10}}
+          //  onPress={handleSignUp}
           >
           </Button>
           <Button
@@ -148,10 +161,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width-50,
     backgroundColor: '#f5f5f5',
 
-    textAlign: 'center',
+    textAlign: 'left',
 
     borderColor: '#d3d3d3',
     borderWidth: 0.7,
+    paddingLeft: 12,
   },
   viewButton: {
     marginBottom: 40
