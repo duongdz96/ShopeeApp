@@ -111,7 +111,7 @@ const SplashPage = (): JSX.Element => {
         position: 'absolute',
         bottom: 50,
       }}>
-        <TouchableOpacity onPress={() => navigation.navigate('LoginPage')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Sign In')}>
           <Text style={{
             color: '#ffffff',
             fontSize: 20,
