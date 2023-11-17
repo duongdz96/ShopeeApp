@@ -88,6 +88,8 @@ const ForgotPassword = (): JSX.Element => {
       }}>
         <Text>Select which contact details should</Text>
         <Text>we use to reset your password:</Text>
+
+        
       </View>
     </SafeAreaView>
   );
