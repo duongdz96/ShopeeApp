@@ -21,8 +21,6 @@ import getImage from '~/libs/getImage';
 import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
-import Button from '~/base/Button';
-import CheckboxButton from '~/base/CheckboxButton';
 
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -41,133 +39,20 @@ const LoginPage = (): JSX.Element => {
     ],
     [theme],
   );
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isChecked, setIsChecked] = useState(false);
-  const toggleCheckbox = () => setIsChecked(!isChecked);
 
   return (
     <SafeAreaView style={styleContainer}>
-      <View style={{
-        alignSelf: 'flex-start',
-        marginLeft: 16,
-        marginBottom: 130,
-        marginTop: 10,
-      }}>
-        <Text>Please fill E-mail & password to login your</Text>
-        <Text>Shopee application account</Text>
-      </View>
-      <View style={styles.viewInput}>
-        <View style={{
-          marginBottom: 8,
+      <Text
+        style={{
+          color: '#000000',
+          fontSize: 16,
+          textAlign: 'center',
+          fontFamily: 'SFProDisplay-Medium',
         }}>
-          <Text style={{
-            color: 'black'
-          }}>E-mail</Text>
-        </View>
-        <TextInput
-         value={email}
-         onChangeText={setEmail}
-         placeholder='example@gmail.com'
-         style={styles.input}
-        />
-      </View>
-
-      <View style={{
-        marginBottom: 40,
-      }}>
-        <View style={{
-          marginBottom: 8,
-        }}>
-          <Text style={{
-            color: 'black'
-          }}>Password</Text>
-        </View>
-        <TextInput
-         value={password}
-         onChangeText={setPassword}
-         placeholder=''
-         style={styles.input}
-         secureTextEntry={true}
-        />
-      </View>
-
-      <View style={{
-        flexDirection: 'column',
-        marginLeft: 0,
-      }}>
-        <CheckboxButton
-         value={isChecked}
-        //  label='Remember me'
-         onPress={toggleCheckbox}
-        />
-        <Pressable 
-         onPress={() => navigation.navigate('Forgot Password')}
-        >
-          <Text>Forgot Password</Text>
-        </Pressable>
-      </View>
-
-      <View style={styles.viewButton}>
-        <Button
-         type='modal'
-         mode='orange'
-         textColor='white'
-         onPress={() => navigation.navigate('BottomTabNavigator')}
-        >
-          Sign In
-        </Button>
-      </View>
-
-      <View style={{
-        marginBottom: 30,
-      }}>
-        <Text style={{
-          color: 'black',
-          fontWeight: '600'
-        }}>Or sign up with</Text>
-      </View>
-
-      <View style={{
-        marginHorizontal: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      }}>
-          <Button
-           disabled={true}
-           type='medium'
-           icon={require('../../../assets/facebook-f-logo-2019.png')}
-           style={{flex: 1,marginRight: 10}}
-          >
-          </Button>
-          <Button
-           disabled={true}
-           type='medium'
-
-          >
-          </Button>
-        </View>
+        {t('LoginPage')}
+      </Text>
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  viewInput: {
-    marginBottom: 15,
-  },
-  input: {
-    height: 56,
-    borderRadius: 12,
-    width: Dimensions.get('window').width-50,
-    backgroundColor: '#f5f5f5',
 
-    textAlign: 'left', 
-
-    borderColor: '#d3d3d3',
-    borderWidth: 0.7,
-    paddingLeft: 12,
-  },
-  viewButton: {
-    marginBottom: 40
-  }
-});
 export default LoginPage;
