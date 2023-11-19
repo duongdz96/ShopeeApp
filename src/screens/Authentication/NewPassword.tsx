@@ -25,7 +25,7 @@ import Button from '~/base/Button';
 import { Checkbox } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const LoginPage = (): JSX.Element => {
+const NewPassword = (): JSX.Element => {
   const { t } = useTranslation();
   const theme = useAppTheme();
   const navigation = useNavigation<RootNavigatorNavProps>();
@@ -43,10 +43,9 @@ const LoginPage = (): JSX.Element => {
     ],
     [theme],
   );
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [checked, setChecked] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const passwordMatch =  newPassword === confirmPassword && newPassword !== '';
   return (
     <SafeAreaView style={styleContainer}>
       <View style={{
@@ -55,8 +54,8 @@ const LoginPage = (): JSX.Element => {
         marginLeft: '6%',
 
       }}>
-        <Text style={styles.headerText}>Please fill E-mail & password to login your</Text>
-        <Text style={styles.headerText}>Shopee application account.</Text>
+        <Text style={styles.headerText}>Your new password must be different</Text>
+        <Text style={styles.headerText}>from previously used passwords.</Text>
       </View>
       <View style={styles.viewInput}>
         <View style={{
@@ -64,98 +63,61 @@ const LoginPage = (): JSX.Element => {
         }}>
           <Text style={{
             color: 'black'
-          }}>E-mail</Text>
+          }}>New Password</Text>
         </View>
         <TextInput
-         value={email}
-         onChangeText={setEmail}
-         placeholder='example@gmail.com'
+         value={newPassword}
+         onChangeText={setNewPassword}
+         placeholder=''
          placeholderTextColor='#D5DDE0'
          style={styles.input}
+         secureTextEntry={true}
         />
       </View>
 
-      <View style={{
-        marginBottom: 40,
-      }}>
+      <View style={styles.viewInput}>
         <View style={{
           marginBottom: 8,
         }}>
           <Text style={{
             color: 'black'
-          }}>Password</Text>
+          }}>Confirm password</Text>
         </View>
         <TextInput
-         value={password}
-         onChangeText={setPassword}
+         value={confirmPassword}
+         onChangeText={setConfirmPassword}
          placeholder=''
          style={styles.input}
          secureTextEntry={true}
         />
       </View>
 
-{/* forgot password and checkbox */}
-      <View style={styles.checkboxContainer}>
-        <Checkbox
-         status={checked ? 'checked' : 'unchecked'}
-         onPress={() => setChecked(!checked)}
-         color='#FF5B2C'
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('Forgot Password')}>
-          <Text style={{
-            paddingLeft: 220,
-            color: '#3E4958',
-            fontWeight: '500',
-            fontSize: 14,
-            lineHeight: 17.07,
-          }}>Forgot password?</Text>
-        </TouchableOpacity>
-      </View>
       <View style={styles.viewButton}>
         <Button
-         type='modal'
          mode='orange'
-         textColor='white'
+         type='modal'
+         textColor='#ffffff'
+         textStyle={{
+            fontWeight: '700',
+            fontSize: 16,
+            fontFamily: 'Montserrat',
+         }}
+         onPress={() => {
+            if(passwordMatch){
+                navigation.navigate('PasswordReset');
+            }
+         }}
+         disabled={!passwordMatch}
         >
-          Sign In
+           Update
         </Button>
       </View>
-
-      <View style={{
-        marginBottom: 30,
-      }}>
-        <Text style={{
-          color: 'black',
-          fontWeight: '600'
-        }}>Or sign in with</Text>
-      </View>
-
-      <View style={{
-        marginHorizontal: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      }}>
-          <Button
-           disabled={true}
-           type='medium'
-           icon={require('../../../assets/facebook-f-logo-2019.png')}
-           style={{flex: 1,marginRight: 10}}
-          //  onPress={handleSignUp}
-          >
-          </Button>
-          <Button
-           disabled={true}
-           type='medium'
-
-          >
-          </Button>
-        </View>
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
   viewInput: {
-    marginBottom: 15,
+    marginBottom: 18,
   },
   input: {
     height: 66,
@@ -169,9 +131,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     paddingLeft: 12,
   },
-  viewButton: {
-    marginBottom: 60
-  },
   headerText: {
     color: '#3E4958',
     fontSize: 13,
@@ -182,7 +141,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 40,
+  },
+  viewButton: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    bottom: 60,
   }
 });
 
-export default LoginPage;
+export default NewPassword;

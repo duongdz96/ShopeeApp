@@ -32,7 +32,8 @@ const SignUpPage = (): JSX.Element => {
       {
         // backgroundColor: theme.colors.backgroundColor,
         flex: 1,
-        justifyContent: 'center',
+        //justifyContent: 'center',
+        marginTop: Dimensions.get('window').height-800,
         alignItems: 'center',
         backgroundColor: 'white',
       },
@@ -67,6 +68,7 @@ const SignUpPage = (): JSX.Element => {
          value={name}
          onChangeText={setName}
          placeholder='John Doe'
+         placeholderTextColor='#D5DDE0'
          style={styles.input}
         />
       </View>
@@ -83,12 +85,13 @@ const SignUpPage = (): JSX.Element => {
          value={email}
          onChangeText={setEmail}
          placeholder='example@gmail.com'
+         placeholderTextColor='#D5DDE0'
          style={styles.input}
         />
       </View>
 
       <View style={{
-        marginBottom: 40,
+        marginBottom: 60,
       }}>
         <View style={{
           marginBottom: 8,
@@ -156,15 +159,15 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   input: {
-    height: 56,
-    borderRadius: 12,
-    width: Dimensions.get('window').width-50,
-    backgroundColor: '#f5f5f5',
+    height: 66,
+    borderRadius: 14,
+    width: Dimensions.get('window').width-70,
+    backgroundColor: '#F7F8F9',
 
     textAlign: 'left',
 
-    borderColor: '#d3d3d3',
-    borderWidth: 0.7,
+    borderColor: '#D5DDE0',
+    borderWidth: 0.5,
     paddingLeft: 12,
   },
   viewButton: {

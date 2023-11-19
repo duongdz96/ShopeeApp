@@ -101,7 +101,12 @@ const SplashPage = (): JSX.Element => {
           type='modal'
           onPress={()=>navigation.navigate('Sign Up')}
           mode='white'
-          textColor='#ff4500'
+          textColor='#ED4D2D'
+          textStyle={{
+            fontSize: 16,
+            fontWeight: '700',
+            lineHeight: 19.5
+          }}
         >Sign Up</Button>
       </View>
       <View style={{
@@ -112,7 +117,8 @@ const SplashPage = (): JSX.Element => {
           <Text style={{
             color: '#ffffff',
             fontSize: 16,
-            fontWeight: '600'
+            fontWeight: '700',
+            lineHeight: 19.5
           }}>Sign In</Text>
         </TouchableOpacity>
       </View>

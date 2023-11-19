@@ -86,7 +86,7 @@ const Button = ({
       case 'white':
         return '#ffffff';
       case 'orange': 
-        return '#ff4500'
+        return '#FF5B2C'
       default:
         return '#0057E7';
     }

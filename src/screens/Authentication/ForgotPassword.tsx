@@ -1,78 +1,40 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  BackHandler,
   Dimensions,
-  Image,
-  Platform,
   SafeAreaView,
   StyleProp,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  View,
   ViewStyle,
+  View,
+  TextInput,
+  Image,
 } from 'react-native';
-import ExitApp from 'react-native-exit-app';
-
-import { useTopInset } from '~/hooks/useInset';
-import useModalManager from '~/hooks/useModalManager';
-import usePreferenceContext from '~/hooks/usePreferenceContext';
 
 import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
+import {auth} from '../../../firebase'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const ForgotPassword = (): JSX.Element => {
-  const { t } = useTranslation();
   const theme = useAppTheme();
   const navigation = useNavigation<RootNavigatorNavProps>();
-  const { openModal } = useModalManager();
-  const resultContext = usePreferenceContext();
-  const topInsets = useTopInset();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      let backButtonPressCount = 0;
-      let backButtonPressTimer: ReturnType<typeof setTimeout> = null;
-
-      const onBackPress = () => {
-        if (backButtonPressCount === 1) {
-          ExitApp.exitApp();
-          return true;
-        } else {
-          backButtonPressCount++;
-          backButtonPressTimer = setTimeout(() => {
-            backButtonPressCount = 0;
-            clearTimeout(backButtonPressTimer);
-          }, 2000);
-          return true;
-        }
-      };
-
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        onBackPress,
-      );
-
-      return () => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-        backHandler.remove();
-      };
-    }, []),
-  );
+  const { t } = useTranslation();
 
   const styleContainer = useMemo<StyleProp<ViewStyle>>(
     () => [
       {
+        backgroundColor: theme.colors.backgroundColorChild,
         flex: 1,
-        justifyContent: 'center',
+        //justifyContent: 'center',
+        marginTop: 0,
         alignItems: 'center',
       },
     ],
@@ -80,23 +42,108 @@ const ForgotPassword = (): JSX.Element => {
   );
   return (
     <SafeAreaView style={styleContainer}>
-     <View style={{
+      <View style={{
         alignSelf: 'flex-start',
-        marginLeft: '5%',
-        marginBottom: '185%',
-        marginTop: 10,
-      }}>
-        <Text>Select which contact details should</Text>
-        <Text>we use to reset your password:</Text>
+        marginBottom: '15%',
+        marginLeft: '6%',
 
-        
+      }}>
+        <Text style={styles.headerText}>Select which contact details should we</Text>
+        <Text style={styles.headerText}>use to reset your password:</Text>
       </View>
+      
+      <TouchableOpacity style={styles.optionContainer} onPress={() => navigation.navigate('Recovery Code', {method: 'sms' } )}>
+        <View style={{
+          borderRadius: 7.41,
+          borderColor: '#D5DDE0',
+          width: 92.59,
+          height: 100,
+          borderWidth: 0.37,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 25,
+        }}>
+           <Image source={require('../../../assets/phone.png')} style={styles.icon}/>
+        </View>
+        <View style={{
+          flexDirection: 'column',
+        }}>
+           <Text style={{
+            color: '#3E4958',
+            fontSize: 14,
+            fontWeight: '600',
+            fontFamily: 'Montserrat',
+            lineHeight: 17.07,
+           }}>via sms:</Text>
+           <Text style={{
+            color: '#3E4958',
+            fontSize: 14,
+            fontWeight: '600',
+            fontFamily: 'Montserrat',
+            lineHeight: 17.07,
+           }}>*** ****61</Text>
+        </View>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.optionContainer} onPress={() => navigation.navigate('Recovery Code', {method: 'email'})}>
+        <View style={{
+          borderRadius: 7.41,
+          borderColor: '#D5DDE0',
+          width: 92.59,
+          height: 100,
+          borderWidth: 0.37,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 25,
+        }}>
+           <Image source={require('../../../assets/phone.png')} style={styles.icon}/>
+        </View>
+        <View style={{
+          flexDirection: 'column',
+        }}>
+           <Text style={{
+            color: '#3E4958',
+            fontSize: 14,
+            fontWeight: '600',
+            fontFamily: 'Montserrat',
+            lineHeight: 17.07,
+           }}>via email:</Text>
+           <Text style={{
+            color: '#3E4958',
+            fontSize: 14,
+            fontWeight: '600',
+            fontFamily: 'Montserrat',
+            lineHeight: 17.07,
+           }}>*****16@gmail.com</Text>
+        </View>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
-
-export default ForgotPassword;
-
 const styles = StyleSheet.create({
-    
+  headerText: {
+    color: '#3E4958',
+    fontSize: 13,
+    fontWeight: '400',
+    lineHeight: 24,
+    fontFamily: 'Roboto'
+  },
+  optionContainer: {
+    width: SCREEN_WIDTH - 72,
+    padding: 10,
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    //justifyContent: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D5DDE0',
+  },
+  icon: {
+    marginRight: 10,
+    width: 28.83,
+    height: 28.83,
+    color: '#3E4958'
+  }
 });
+export default ForgotPassword;

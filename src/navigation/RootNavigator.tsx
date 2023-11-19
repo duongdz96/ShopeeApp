@@ -20,6 +20,10 @@ import BottomTabNavigator, {
   BottomTabNavigatorProps,
 } from './BottomTabNavigator';
 import ForgotPassword from '~/screens/Authentication/ForgotPassword';
+import RecoveryPage from '~/screens/Authentication/RecoveryPage';
+import { useAppTheme } from '~/resources/theme';
+import NewPassword from '~/screens/Authentication/NewPassword';
+import PasswordReset from '~/screens/Authentication/PasswordReset';
 
 export type RootNavigatorProps = {
   navigate(arg0: string): unknown;
@@ -50,6 +54,7 @@ const StackNavigator = createStackNavigator<RootNavigatorProps>();
 const screenOptions = { headerShown: false };
 
 const RootNavigator = (): JSX.Element => {
+  const theme = useAppTheme();
   return (
     <StackNavigator.Navigator
       screenOptions={screenOptions}
@@ -88,7 +93,7 @@ const RootNavigator = (): JSX.Element => {
           gestureEnabled: false,
           headerShown: true,
           headerStyle: {
-            backgroundColor: '#ffffff'
+            backgroundColor: theme.colors.backgroundColorChild,
           },
           headerShadowVisible: false
         }}
@@ -100,7 +105,13 @@ const RootNavigator = (): JSX.Element => {
           gestureEnabled: false,
           headerShown: true,
           headerStyle: {
-            backgroundColor: '#ffffff'
+            backgroundColor: theme.colors.backgroundColorChild,
+          },
+          headerTitleStyle: {
+            fontSize: 26,
+            fontWeight: '600',
+            lineHeight: 31.69,
+            color: '#3E4958'
           },
           headerShadowVisible: false
         }}
@@ -122,10 +133,50 @@ const RootNavigator = (): JSX.Element => {
         gestureEnabled: false,
         headerShown: true,
         headerStyle: {
-          backgroundColor: '#ffffff',
+          backgroundColor: theme.colors.backgroundColorChild,
         },
         headerShadowVisible: false
       }}
+      />
+      <StackNavigator.Screen
+       name='Recovery Code'
+       component={RecoveryPage}
+       options={{ 
+        gestureEnabled: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: theme.colors.backgroundColorChild,
+        },
+        headerShadowVisible: false
+      }}
+      />
+      <StackNavigator.Screen
+        name='New Password'
+        component={NewPassword}
+        options={{ 
+         gestureEnabled: false,
+         headerShown: true,
+         headerStyle: {
+           backgroundColor: theme.colors.backgroundColorChild,
+         },
+         headerShadowVisible: false
+       }}
+      />
+      <StackNavigator.Screen
+        name='PasswordReset'
+        component={PasswordReset}
+      />
+      <StackNavigator.Screen
+        name='Welcome back'
+        component={LoginPage}
+        options={{ 
+         gestureEnabled: false,
+         headerShown: true,
+         headerStyle: {
+           backgroundColor: theme.colors.backgroundColorChild,
+         },
+         headerShadowVisible: false
+       }}
       />
     </StackNavigator.Navigator>
   );

@@ -27,7 +27,8 @@ export const CombinedDefaultTheme = {
     myOwnProperty: true,
     text: '#000000',
     //Define new color
-    backgroundColor: '#ff4500',
+    backgroundColor: '#FF5B2C',
+    backgroundColorChild: '#ffffff',
     backgroundInput: '#FAFAFA',
     backgroundModal: '#FFFFFF',
     backgroundIndicator: '#E0E0E0',
