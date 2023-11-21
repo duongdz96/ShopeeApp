@@ -116,6 +116,7 @@ const LoginPage = (): JSX.Element => {
          type='modal'
          mode='orange'
          textColor='white'
+         onPress={() => navigation.navigate('BottomTabNavigator')}
         >
           Sign In
         </Button>

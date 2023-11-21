@@ -21,6 +21,7 @@
     "LocationWhenInUse"
   ],
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@gorhom/bottom-sheet": "^4.4.6",
     "@quan2nd/react-native-activity-state": "^0.1.1",
     "@react-native-async-storage/async-storage": "^1.18.2",
@@ -88,7 +89,7 @@
     "react-native-tab-view": "^3.5.1",
     "react-native-toast-message": "^2.1.6",
     "react-native-uuid": "^2.0.1",
-    "react-native-vector-icons": "^9.2.0",
+    "react-native-vector-icons": "^10.0.2",
     "react-native-webview": "^13.6.0",
     "react-string-replace": "^1.1.1",
     "rn-fetch-blob": "^0.12.0",

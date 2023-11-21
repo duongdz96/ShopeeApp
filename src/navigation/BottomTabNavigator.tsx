@@ -11,7 +11,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import LottieView from 'lottie-react-native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Platform, View } from 'react-native';
+import { Image, Platform, View } from 'react-native';
 
 import { useBottomInset } from '~/hooks/useInset';
 import usePreferenceContext from '~/hooks/usePreferenceContext';
@@ -124,17 +124,10 @@ const BottomTabNavigator = (): JSX.Element => {
           name='HomeNavigator'
           component={HomeNavigator}
           options={{
+            tabBarLabel: '',
             tabBarIcon: ({ focused }) =>
-              focused ? (
-                <LottieView
-                  source={getImage('homeAnimate')}
-                  autoPlay
-                  loop
-                  style={{ height: 40, width: 40 }}
-                />
-              ) : (
-                <IconHome />
-              ),
+                <Image source={getImage('homeAnimate')} style={{height: 16, width: 19}}/>
+
           }}
         />
 
@@ -142,18 +135,13 @@ const BottomTabNavigator = (): JSX.Element => {
           name='LibraryNavigator'
           component={LibraryNavigator}
           options={{
-            tabBarLabel: t('Library'),
+            tabBarLabel: '',
             tabBarIcon: ({ focused }) =>
-              focused ? (
-                <LottieView
-                  source={getImage('moon')}
-                  autoPlay
-                  loop
-                  style={{ height: 30, width: 30 }}
-                />
-              ) : (
-                <IconLocated />
-              ),
+              <Image source={getImage('heart')} style={{
+                height: 16,
+                width: 19,
+                tintColor: focused ? 'white' : undefined
+              }}/>
           }}
         />
 
@@ -161,18 +149,9 @@ const BottomTabNavigator = (): JSX.Element => {
           name='NotificationNavigator'
           component={NotificationNavigator}
           options={{
-            tabBarLabel: t('Notification'),
+            tabBarLabel: '',
             tabBarIcon: ({ focused }) =>
-              focused ? (
-                <LottieView
-                  source={getImage('moon2')}
-                  autoPlay
-                  loop
-                  style={{ height: 32, width: 32 }}
-                />
-              ) : (
-                <IconMusic />
-              ),
+            <Image source={getImage('whilist')} style={{height: 16, width: 16}}/>
           }}
         />
 
@@ -180,18 +159,9 @@ const BottomTabNavigator = (): JSX.Element => {
           name='ProfileNavigator'
           component={ProfileNavigator}
           options={{
-            tabBarLabel: t('Profile'),
+            tabBarLabel: '',
             tabBarIcon: ({ focused }) =>
-              focused ? (
-                <LottieView
-                  source={getImage('profile')}
-                  autoPlay
-                  loop
-                  style={{ height: 30, width: 30 }}
-                />
-              ) : (
-                <IconProfile />
-              ),
+            <Image source={getImage('profile')} style={{height: 18, width: 18}}/>
           }}
         />
       </Tab.Navigator>

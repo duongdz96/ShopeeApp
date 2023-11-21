@@ -20,6 +20,7 @@ import { ANDROID_INTER_SPLASH, IOS_INTER_SPLASH } from '@env';
 import i18n from 'i18next';
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
+import firebase from '@react-native-firebase/app'
 
 const SplashPage = (): JSX.Element => {
   const navigation = useNavigation<RootNavigatorNavProps>();
@@ -27,7 +28,6 @@ const SplashPage = (): JSX.Element => {
   const { t } = useTranslation();
 
   const [isFirst, setIsFirst] = useState(false);
-
   useEffect(() => {
     // AsyncStorage.removeItem('isFirstOpen');
     // AsyncStorage.setItem('isFirstOpen', 'true');
@@ -62,6 +62,16 @@ const SplashPage = (): JSX.Element => {
     ],
     [theme],
   );
+  useEffect(() => {
+    // Check the Firebase Auth state
+    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; 
+  }, []);
+  const onAuthStateChanged = (user) => {
+    if (user) {
+      navigation.replace('HomePage'); 
+    }
+  };
 
   // useEffect(() => {
   //   const loadLanguage = async () => {
@@ -91,7 +101,7 @@ const SplashPage = (): JSX.Element => {
     <View style={styleContainer}>
       {/* <StatusBar translucent backgroundColor='transparent' /> */}
       <View style={styles.viewLogo}>
-        <IconLogo height={100} width={100} />
+        {/* <IconLogo height={100} width={100} /> */}
         <Text style={styleAppName}>
           {t(`Shopee`)}
         </Text>
