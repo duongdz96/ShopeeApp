@@ -62,17 +62,6 @@ const SplashPage = (): JSX.Element => {
     ],
     [theme],
   );
-  useEffect(() => {
-    // Check the Firebase Auth state
-    const subscriber = firebase.auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; 
-  }, []);
-  const onAuthStateChanged = (user) => {
-    if (user) {
-      navigation.replace('HomePage'); 
-    }
-  };
-
   // useEffect(() => {
   //   const loadLanguage = async () => {
   //     const language = await AsyncStorage.getItem('languageApp');

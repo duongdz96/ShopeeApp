@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "564057098276",
+    "project_id": "shopeeapp-b5134",
+    "storage_bucket": "shopeeapp-b5134.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564057098276:android:8b53633846b323bc0e70b1",
+        "android_client_info": {
+          "package_name": "com.phonetracker.gpslocation.phonelocation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaJoe3_L5LLGyS4sslmhSBO-VvuFUfm3g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
