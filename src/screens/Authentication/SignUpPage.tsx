@@ -16,7 +16,9 @@ import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
-import {auth} from '../../../firebase'
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { ActivityIndicator } from 'react-native-paper';
+import { FIREBASE_AUTH } from '~/Firebase/firebase';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -43,7 +45,8 @@ const SignUpPage = (): JSX.Element => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const [loading, setLoading] = useState(false);
+  const auth = FIREBASE_AUTH;
   // const handleSignUp = () => {
   //   auth
   //     .createUserWithEmailAndPassword(email, password)
@@ -53,6 +56,19 @@ const SignUpPage = (): JSX.Element => {
   //     })
   //     .catch((error: { message: any; }) => alert(error.message))
   // }
+  const signUp = async() => {
+    setLoading(true);
+    try {
+      const response = await createUserWithEmailAndPassword(auth, email, password);
+      //console.log(response);
+      navigation.navigate('BottomTabNavigator')
+    }catch (error: any) {
+      console.log(error);
+      alert('Sign up failed ' + error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <SafeAreaView style={styleContainer}>
@@ -109,15 +125,22 @@ const SignUpPage = (): JSX.Element => {
         />
       </View>
 
+      {loading ? (
+        <ActivityIndicator size='large' color='#000ff'/>
+      ) : (
+      <>
       <View style={styles.viewButton}>
         <Button
          type='modal'
          mode='orange'
          textColor='white'
+         onPress={signUp}
         >
           Sign Up
         </Button>
       </View>
+      </>
+      )}
 
       <View style={{
         marginBottom: 30,

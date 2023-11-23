@@ -17,7 +17,7 @@ import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
-import {auth} from '../../../firebase'
+import {auth} from '../../Firebase/firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;

@@ -22,8 +22,11 @@ import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
-import { Checkbox } from 'react-native-paper';
+import { ActivityIndicator, Checkbox } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { FIREBASE_AUTH } from '~/Firebase/firebase';
+import {signInWithEmailAndPassword} from 'firebase/auth'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -47,6 +50,22 @@ const LoginPage = (): JSX.Element => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const auth = FIREBASE_AUTH;
+  const signIn = async() => {
+    setLoading(true);
+    try {
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      await AsyncStorage.setItem('isLogin', 'true');
+      //console.log(response);
+      navigation.navigate("BottomTabNavigator")
+    }catch (error: any) {
+      console.log(error);
+      alert('Sign in failed')
+    } finally {
+      setLoading(false)
+    }
+  }
   return (
     <SafeAreaView style={styleContainer}>
       <View style={{
@@ -68,7 +87,7 @@ const LoginPage = (): JSX.Element => {
         </View>
         <TextInput
          value={email}
-         onChangeText={setEmail}
+         onChangeText={(text) => setEmail(text)}
          placeholder='example@gmail.com'
          placeholderTextColor='#D5DDE0'
          style={styles.input}
@@ -87,7 +106,7 @@ const LoginPage = (): JSX.Element => {
         </View>
         <TextInput
          value={password}
-         onChangeText={setPassword}
+         onChangeText={(text) => setPassword(text)}
          placeholder=''
          style={styles.input}
          secureTextEntry={true}
@@ -111,17 +130,22 @@ const LoginPage = (): JSX.Element => {
           }}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
+      {loading ? (
+        <ActivityIndicator size='large' color='#000ff'/>
+      ) : (
+        <>
       <View style={styles.viewButton}>
         <Button
          type='modal'
          mode='orange'
          textColor='white'
-         onPress={() => navigation.navigate('BottomTabNavigator')}
+         onPress={signIn}
         >
           Sign In
         </Button>
       </View>
-
+      </>
+      )}
       <View style={{
         marginBottom: 30,
       }}>

@@ -31,14 +31,22 @@ const SplashPage = (): JSX.Element => {
   useEffect(() => {
     // AsyncStorage.removeItem('isFirstOpen');
     // AsyncStorage.setItem('isFirstOpen', 'true');
-
     const loadPurchase = async () => {
       const isFirstState = Boolean(await AsyncStorage.getItem('isFirstOpen'));
       setIsFirst(isFirstState);
     };
     loadPurchase();
   }, []);
-
+  useEffect (() => {
+    const checkLoginStatus = async() => {
+      const isLogin = await AsyncStorage.getItem('isLogin');
+      if(isLogin === 'true'){
+        navigation.replace('BottomTabNavigator');
+      }
+    };
+    checkLoginStatus();
+  }, [navigation])
+  
   const styleContainer = useMemo<StyleProp<ViewStyle>>(
     () => [
       {
