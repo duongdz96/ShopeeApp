@@ -24,9 +24,9 @@ import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
 import { ActivityIndicator, Checkbox } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { FIREBASE_AUTH } from '~/Firebase/firebase';
-import {signInWithEmailAndPassword} from 'firebase/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FIREBASE_AUTH } from '~/Firebase/database';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -52,18 +52,17 @@ const LoginPage = (): JSX.Element => {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
-  const signIn = async() => {
+  const handleSignIn = async () => {
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      await AsyncStorage.setItem('isLogin', 'true');
-      //console.log(response);
-      navigation.navigate("BottomTabNavigator")
-    }catch (error: any) {
+      navigation.navigate('BottomTabNavigator');
+      console.log(response);
+    }catch (error) {
       console.log(error);
-      alert('Sign in failed')
-    } finally {
-      setLoading(false)
+      alert('Sign in failed');
+    }finally {
+      setLoading(false);
     }
   }
   return (
@@ -131,7 +130,7 @@ const LoginPage = (): JSX.Element => {
         </TouchableOpacity>
       </View>
       {loading ? (
-        <ActivityIndicator size='large' color='#000ff'/>
+        <ActivityIndicator size='large' color='orange'/>
       ) : (
         <>
       <View style={styles.viewButton}>
@@ -139,7 +138,7 @@ const LoginPage = (): JSX.Element => {
          type='modal'
          mode='orange'
          textColor='white'
-         onPress={signIn}
+         onPress={handleSignIn}
         >
           Sign In
         </Button>

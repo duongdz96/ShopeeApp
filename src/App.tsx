@@ -37,6 +37,8 @@ import NavigationContainer from '~/navigation/NavigationContainer';
 import RootNavigator from '~/navigation/RootNavigator';
 
 import './contextStore/TranslationContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import BottomTabNavigator from './navigation/BottomTabNavigator';
 
 const App = () => {
   const [isThemeDark, setIsThemeDark] = useState(true);
@@ -83,7 +85,6 @@ const App = () => {
       />
     ),
   };
-
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <PreferencesContext.Provider value={preferences}>
@@ -93,7 +94,7 @@ const App = () => {
               <GestureHandlerRootView style={{ flex: 1 }}>
                 <ToastProvider>
                   <BottomSheetModalProvider>
-                    <RootNavigator />
+                  <RootNavigator />
                     <ModalContainer />
                     <Toast config={toastConfig} />
                   </BottomSheetModalProvider>

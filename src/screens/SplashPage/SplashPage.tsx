@@ -37,15 +37,6 @@ const SplashPage = (): JSX.Element => {
     };
     loadPurchase();
   }, []);
-  useEffect (() => {
-    const checkLoginStatus = async() => {
-      const isLogin = await AsyncStorage.getItem('isLogin');
-      if(isLogin === 'true'){
-        navigation.replace('BottomTabNavigator');
-      }
-    };
-    checkLoginStatus();
-  }, [navigation])
   
   const styleContainer = useMemo<StyleProp<ViewStyle>>(
     () => [

@@ -30,6 +30,9 @@ import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import IconShoppingCard from '~/resources/Icons/IconShoppingCart'
 import IconNotification from '~/resources/Icons/IconNotification'
 import {ShoppingCartOutlined } from '@ant-design/icons'
+import Button from '~/base/Button';
+import {collection, getDocs} from 'firebase/firestore'
+import { FIREBASE_DB } from '~/Firebase/database'; 
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -41,6 +44,23 @@ const HomePage = (): JSX.Element => {
   const { openModal } = useModalManager();
   const resultContext = usePreferenceContext();
   const topInsets = useTopInset();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(FIREBASE_DB, 'cars'));
+        const dataList = [];
+        querySnapshot.forEach((doc) => {
+          dataList.push({id: doc.id, ...doc.data()});
+        });
+        setData(dataList);
+      }catch (error){
+        console.error("Error fetching data", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -97,17 +117,22 @@ const HomePage = (): JSX.Element => {
       <View style={styles.headers}>
         <View style={{
           flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-around'
         }}>
           <TextInput
            placeholder='Search'
            style={styles.searchBar}
           />
-          <IconShoppingCard style={{
-            marginRight: 10,
-          }}/>
-          <IconNotification style={{
-            marginTop: 4,
-          }}/>
+          <IconShoppingCard
+           style={{marginTop: 4,
+          }}
+          onPress = {() => navigation.navigate('My Cart')}
+          />
+          <IconNotification
+           style={{marginTop: 4}}
+           onPress={() => console.log('Notifications')}
+          />
         </View>
         <ScrollView
          horizontal
@@ -153,6 +178,46 @@ const HomePage = (): JSX.Element => {
         </View>
       </View>
       
+      <View style={styles.itemView}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          padding: 40,
+          justifyContent: 'space-between'
+        }}>
+          <Text style={{
+            fontWeight: '700',
+            fontSize: 21,
+            lineHeight: 25.2,
+            color: '#FF5F00',
+          }}>FLASHSALE</Text>
+          <Button
+           type='small'
+           textColor='#ffffff'
+           mode='orange'
+           style={{
+           }}
+          >
+            View all
+          </Button>
+        </View>
+        <ScrollView
+         horizontal
+         showsHorizontalScrollIndicator={false}
+         style={{
+          marginLeft: 10,
+         }}
+        >
+          {data.map(item => (
+            <>
+              <View key={item.id} style={styles.itemList}>
+                <Image source={{uri: item.image}}/>
+                <Text>{item.brand}</Text>
+              </View>
+            </>
+          ))}
+        </ScrollView>
+      </View>
     </ScrollView>
   );
 };
@@ -203,5 +268,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 30,
+  },
+  itemView: {
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    backgroundColor: '#F7F8F9',
+    marginTop: '20%',
+  },
+  itemList: {
+    marginRight: 15,
   }
 });

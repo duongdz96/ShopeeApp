@@ -8,9 +8,9 @@ import {
   useColorScheme,
 } from 'react-native';
 import { Button as DefaultButton } from 'react-native-paper';
-import { IconSource } from 'react-native-paper/lib/typescript/src/components/Icon';
+import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
 
-type ButtonType = 'modal' | 'medium' | 'big';
+type ButtonType = 'modal' | 'medium' | 'big' | 'small';
 type ButtonRadius = 'many' | 'little';
 type ButtonMode = 'login' | 'strong' | 'light' | 'white' | 'orange';
 
@@ -56,6 +56,8 @@ const getWidth = (type?: ButtonType) => {
       return SCREEN_WIDTH - 72;
     case 'modal':
       return SCREEN_WIDTH / 1.4 - 5;
+    case 'small':
+      return SCREEN_WIDTH / 2 - 100;
     default:
       return SCREEN_WIDTH - 48;
   }

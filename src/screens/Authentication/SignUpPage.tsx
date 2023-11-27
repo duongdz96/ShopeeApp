@@ -10,15 +10,16 @@ import {
   ViewStyle,
   View,
   TextInput,
+  Alert,
 } from 'react-native';
 
 import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ActivityIndicator } from 'react-native-paper';
-import { FIREBASE_AUTH } from '~/Firebase/firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { FIREBASE_AUTH } from '~/Firebase/database';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -47,7 +48,20 @@ const SignUpPage = (): JSX.Element => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
-  // const handleSignUp = () => {
+  const handleSignUp = async () => {
+    setLoading(true);
+    try {
+      const response = await createUserWithEmailAndPassword(auth, email, password);
+      alert('Sign Up success');
+      navigation.navigate('Sign In')
+      console.log(response);
+    }catch (error) {
+      console.log(error);
+      alert('Sign Up failed');
+    }finally {
+      setLoading(false);
+    }
+  }
   //   auth
   //     .createUserWithEmailAndPassword(email, password)
   //     .then((userCredentials: { user: any; }) => {
@@ -56,20 +70,6 @@ const SignUpPage = (): JSX.Element => {
   //     })
   //     .catch((error: { message: any; }) => alert(error.message))
   // }
-  const signUp = async() => {
-    setLoading(true);
-    try {
-      const response = await createUserWithEmailAndPassword(auth, email, password);
-      //console.log(response);
-      navigation.navigate('BottomTabNavigator')
-    }catch (error: any) {
-      console.log(error);
-      alert('Sign up failed ' + error.message)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   return (
     <SafeAreaView style={styleContainer}>
       <View style={styles.viewInput}>
@@ -126,7 +126,7 @@ const SignUpPage = (): JSX.Element => {
       </View>
 
       {loading ? (
-        <ActivityIndicator size='large' color='#000ff'/>
+        <ActivityIndicator size='large' color='orange'/>
       ) : (
       <>
       <View style={styles.viewButton}>
@@ -134,7 +134,7 @@ const SignUpPage = (): JSX.Element => {
          type='modal'
          mode='orange'
          textColor='white'
-         onPress={signUp}
+         onPress={handleSignUp}
         >
           Sign Up
         </Button>

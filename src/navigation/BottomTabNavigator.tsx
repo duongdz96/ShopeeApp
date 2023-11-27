@@ -34,6 +34,8 @@ import NotificationNavigator, {
 } from './NotificationNavigator';
 import ProfileNavigator, { ProfileNavigatorProps } from './ProfileNavigator';
 import { RootNavigatorProps } from './RootNavigator';
+import { MyCartNavigatorProps } from './MyCartNavigator';
+import { UseHandlerContext } from 'react-native-reanimated/lib/typescript/reanimated2/hook/utils';
 
 export type BottomTabNavigatorProps = {
   HomeNavigator: NavigatorScreenParams<HomeNavigatorProps> | undefined;
@@ -42,6 +44,7 @@ export type BottomTabNavigatorProps = {
     | NavigatorScreenParams<NotificationNavigatorProps>
     | undefined;
   ProfileNavigator: NavigatorScreenParams<ProfileNavigatorProps> | undefined;
+  MyCartNavigator: NavigatorScreenParams<MyCartNavigatorProps> | undefined;
 };
 
 export type BottomTabNavigatorRouteProps = RouteProp<BottomTabNavigatorProps>;
@@ -91,6 +94,10 @@ export type NotificationNavigatorRouteProps = RouteProp<
   'NotificationNavigator'
 >;
 
+export type MyCartNavigatorNavProps = CompositeNavigationProp<
+  BottomTabNavigationProp<BottomTabNavigatorProps, 'MyCartNavigator'>,
+  StackNavigationProp<RootNavigatorProps>
+>;
 const ID_ADS_BANNER = Platform?.OS === 'ios' ? IOS_BANNER : ANDROID_BANNER;
 
 const BottomTabNavigator = (): JSX.Element => {

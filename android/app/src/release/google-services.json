@@ -1,26 +1,43 @@
 {
   "project_info": {
-    "project_number": "420101489707",
-    "project_id": "phone-tracker-triple",
-    "storage_bucket": "phone-tracker-triple.appspot.com"
+    "project_number": "693419658455",
+    "project_id": "phone-tracker-86ff0",
+    "storage_bucket": "phone-tracker-86ff0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:420101489707:android:7e608f7dac4dd266cfd66e",
+        "mobilesdk_app_id": "1:693419658455:android:d83ae88135c099e8e7b492",
         "android_client_info": {
-          "package_name": "com.phonetracker.gpslocation.phonelocation"
+          "package_name": "com.phonetracker.gpslocation.phonelocation.dev"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "693419658455-8nkqgpvtilporvhri6454ross4mm2tlq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBqe3Uc_JST-zrirpcp_1H1JTLEWdV96fE"
+          "current_key": "AIzaSyCsbCrTCvjTl-BlLoZzHcv9jMmtVq-HhV0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "693419658455-8nkqgpvtilporvhri6454ross4mm2tlq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "693419658455-rub3onl74uus9c27o8go7itca5upnn0r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.triple.phone-tracker"
+              }
+            }
+          ]
         }
       }
     }
