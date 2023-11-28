@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BackHandler,
@@ -23,6 +23,8 @@ import usePreferenceContext from '~/hooks/usePreferenceContext';
 import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Button from '~/base/Button';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -77,21 +79,77 @@ const SettingPage = (): JSX.Element => {
     ],
     [theme],
   );
+  const [userName, setUserName] = useState('');
+  useEffect(() => {
+    const getUserName = async () => {
+      const storeUserName = await AsyncStorage.getItem('userName');
+      if(storeUserName) {
+        setUserName(storeUserName);
+      }
+    };
+    getUserName();
+  }, []);
   return (
     <SafeAreaView style={styleContainer}>
-      <Text
-        style={{
-          color: '#000000',
-          fontSize: 16,
-          textAlign: 'center',
-          fontFamily: 'SFProDisplay-Medium',
+      <View style={styles.editProfile}>
+        <Text style={{
+          fontFamily: 'Montserrat',
+          fontWeight: '600',
+          fontSize: 14,
+          lineHeight: 17.07,
+          color: '#3E4958'
+        }}>{userName}</Text>
+        <Button
+         type='medium'
+         mode='orange'
+         textColor='#D5DDE0'
+         disabled={true}
+        >Edit account</Button>
+      </View>
+      <View style={styles.purchaseView}>
+        <View style={{
+          flexDirection: 'row',
+          margin: 15,
+          justifyContent: 'space-between',
+          alignItems: 'center'
         }}>
-        {t('SettingPage')}
-      </Text>
+          <Text style={{
+            fontFamily: 'Montserrat',
+            fontWeight: '600',
+            fontSize: 14,
+            lineHeight: 17,
+            color: '#3E4958'
+          }}>My Purchases</Text>
+          <Text style={{
+            fontFamily: 'MS Gothic',
+            fontSize: 8,
+            fontWeight: '400',
+            lineHeight: 8,
+          }}>
+          View Purchase History {'>'}
+          </Text>
+        </View>
+        <View style={{
+            width: 303,
+            height: 1,
+            backgroundColor: '#D5DDE0',
+            alignSelf: 'center'
+          }}></View>
+      </View>
     </SafeAreaView>
   );
 };
 
 export default SettingPage;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  editProfile: {
+    marginBottom: 20,
+  },
+  purchaseView: {
+    width: 357,
+    height: 166,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 19,
+  }
+});

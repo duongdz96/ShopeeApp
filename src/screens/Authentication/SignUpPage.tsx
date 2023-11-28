@@ -18,7 +18,7 @@ import { useAppTheme } from '~/resources/theme';
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
 import { ActivityIndicator } from 'react-native-paper';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { FIREBASE_AUTH } from '~/Firebase/database';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -52,6 +52,10 @@ const SignUpPage = (): JSX.Element => {
     setLoading(true);
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
+      const user = response.user;
+      await updateProfile(user, {
+        displayName: name,
+      })
       alert('Sign Up success');
       navigation.navigate('Sign In')
       console.log(response);
