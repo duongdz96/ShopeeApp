@@ -25,7 +25,7 @@ import Button from '~/base/Button';
 import { ActivityIndicator, Checkbox } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FIREBASE_AUTH } from '~/Firebase/database';
+import { FIREBASE_AUTH } from '~/Firebase/UserData';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const LoginPage = (): JSX.Element => {
@@ -141,6 +141,7 @@ const LoginPage = (): JSX.Element => {
          mode='orange'
          textColor='white'
          onPress={handleSignIn}
+        // onPress={() => navigation.navigate('BottomTabNavigator')}
         >
           Sign In
         </Button>

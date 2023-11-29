@@ -19,7 +19,7 @@ import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
 import { ActivityIndicator } from 'react-native-paper';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import { FIREBASE_AUTH } from '~/Firebase/database';
+import { FIREBASE_AUTH } from '~/Firebase/UserData';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;

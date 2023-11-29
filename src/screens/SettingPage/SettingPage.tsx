@@ -75,6 +75,7 @@ const SettingPage = (): JSX.Element => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: theme.colors.backgroundColorChild,
       },
     ],
     [theme],
@@ -103,9 +104,13 @@ const SettingPage = (): JSX.Element => {
          type='medium'
          mode='orange'
          textColor='#D5DDE0'
+         textStyle={{
+          
+         }}
          disabled={true}
         >Edit account</Button>
       </View>
+      {/* card 1 */}
       <View style={styles.purchaseView}>
         <View style={{
           flexDirection: 'row',
@@ -130,7 +135,124 @@ const SettingPage = (): JSX.Element => {
           </Text>
         </View>
         <View style={{
-            width: 303,
+            width: 310,
+            height: 1,
+            backgroundColor: '#D5DDE0',
+            alignSelf: 'center'
+          }}></View>
+          <View style={{
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 6,
+          }}>
+             <Image 
+               source={require('~/resources/images/payIcon.png')}
+               style={{
+                width: 34,
+                height: 34,
+               }}
+             />
+             <Image 
+              source={require('~/resources/images/shipIcon.png')}
+              style={{
+                width: 46,
+                height: 46,
+              }}
+             />
+             <Image
+              source={require('~/resources/images/truckIcon.png')}
+             />
+             <Image
+              source={require('~/resources/images/starIcon.png')}
+             />
+          </View>
+          <View style={{
+            width: 310,
+            height: 1,
+            backgroundColor: '#D5DDE0',
+            alignSelf: 'center'
+          }}></View>
+          <View style={{
+          flexDirection: 'row',
+          marginHorizontal: 15,
+          marginVertical: 5,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <Text style={{
+            fontFamily: 'Montserrat',
+            fontWeight: '600',
+            fontSize: 14,
+            lineHeight: 17,
+            color: '#3E4958'
+          }}>Digital Purchases</Text>
+          <Text style={{
+            fontFamily: 'MS Gothic',
+            fontSize: 8,
+            fontWeight: '400',
+            lineHeight: 8,
+          }}>
+          View my top-up {'>'}
+          </Text>
+        </View>
+      </View>
+
+      {/* Card 2 */}
+      <View style={styles.purchaseView}>
+        <View style={{
+          flexDirection: 'row',
+          margin: 15,
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}>
+          <Text style={{
+            fontFamily: 'Montserrat',
+            fontWeight: '600',
+            fontSize: 14,
+            lineHeight: 17,
+            color: '#3E4958'
+          }}>My Purchases</Text>
+        </View>
+        <View style={{
+            width: 310,
+            height: 1,
+            backgroundColor: '#D5DDE0',
+            alignSelf: 'center'
+          }}></View>
+          <View style={{
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: 6,
+          }}>
+             <Image 
+               source={require('~/resources/images/walletIcon.png')}
+               style={{
+                width: 30,
+                height: 30,
+               }}
+             />
+             <Image 
+              source={require('~/resources/images/coinIcon.png')}
+              style={{
+                width: 31,
+                height: 31,
+              }}
+             />
+             <Image
+              source={require('~/resources/images/sPayLater.png')}
+             />
+             <Image
+              source={require('~/resources/images/voucherIcon.png')}
+             />
+          </View>
+          <View style={{
+            width: 310,
             height: 1,
             backgroundColor: '#D5DDE0',
             alignSelf: 'center'
@@ -149,7 +271,16 @@ const styles = StyleSheet.create({
   purchaseView: {
     width: 357,
     height: 166,
-    backgroundColor: '#f5f5f5',
     borderRadius: 19,
+    backgroundColor: '#ffffff',
+    shadowColor: 'black',
+    shadowOffset: {
+      width: -2,
+      height: 4,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+    elevation: 5,
+    marginBottom: 5,
   }
 });

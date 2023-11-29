@@ -46,7 +46,7 @@
     "@vlzh/react-modal-manager": "^2.0.0-alpha.4",
     "axios": "^1.4.0",
     "deprecated-react-native-prop-types": "^4.2.1",
-    "firebase": "^10.6.0",
+    "firebase": "^10.7.0",
     "i18next": "^22.5.0",
     "lottie-ios": "3.4.0",
     "lottie-react-native": "^5.1.6",

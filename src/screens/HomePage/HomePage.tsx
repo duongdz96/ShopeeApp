@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   BackHandler,
   Dimensions,
+  FlatList,
   Image,
   Platform,
   SafeAreaView,
@@ -32,7 +33,8 @@ import IconNotification from '~/resources/Icons/IconNotification'
 import {ShoppingCartOutlined } from '@ant-design/icons'
 import Button from '~/base/Button';
 import {collection, getDocs} from 'firebase/firestore'
-import { FIREBASE_DB } from '~/Firebase/database'; 
+import { FIREBASE_DB } from '~/Firebase/UserData'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -201,22 +203,27 @@ const HomePage = (): JSX.Element => {
             View all
           </Button>
         </View>
-        <ScrollView
-         horizontal
-         showsHorizontalScrollIndicator={false}
-         style={{
-          marginLeft: 10,
-         }}
-        >
-          {data.map(item => (
-            <>
-              <View key={item.id} style={styles.itemList}>
-                <Image source={{uri: item.image}}/>
-                <Text>{item.brand}</Text>
-              </View>
-            </>
-          ))}
-        </ScrollView>
+        
+           <FlatList
+              horizontal={true}
+              data={data}
+              keyExtractor={item => item.id}
+              style={{
+                marginLeft: 10,
+              }}
+              renderItem={({ item }) => (
+               <TouchableOpacity 
+                 style={styles.itemList} 
+                 onPress={() => navigation.navigate('My Wishlist', {carDetails: item})}
+                >
+                 <Image source={{uri: item.image}} style={{width: 125, height: 135,}}/>
+                 <Text style={styles.textItem}>{item.brand}</Text>
+                 <Text style={styles.textItem}>{item.model}</Text>
+                 <Text style={styles.textItem}>{item.year}</Text>
+                 <Text style={styles.textItem}>${item.price}</Text>
+                </TouchableOpacity>
+               )}
+            />
       </View>
     </ScrollView>
   );
@@ -279,5 +286,15 @@ const styles = StyleSheet.create({
   },
   itemList: {
     marginRight: 15,
+    alignItems: 'center',
+    backgroundColor: '#FEFEFE',
+    height: 233,
+    width: 140,
+  },
+  textItem: {
+    fontFamily: 'Montserrat',
+    fontWeight: '600',
+    fontSize: 12,
+    color: '#3E4958',
   }
 });

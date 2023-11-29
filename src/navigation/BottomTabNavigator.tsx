@@ -45,6 +45,7 @@ export type BottomTabNavigatorProps = {
     | undefined;
   ProfileNavigator: NavigatorScreenParams<ProfileNavigatorProps> | undefined;
   MyCartNavigator: NavigatorScreenParams<MyCartNavigatorProps> | undefined;
+  MyWishlistNavigator: NavigatorScreenParams<MyCartNavigatorProps> | undefined;
 };
 
 export type BottomTabNavigatorRouteProps = RouteProp<BottomTabNavigatorProps>;
@@ -96,6 +97,10 @@ export type NotificationNavigatorRouteProps = RouteProp<
 
 export type MyCartNavigatorNavProps = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabNavigatorProps, 'MyCartNavigator'>,
+  StackNavigationProp<RootNavigatorProps>
+>;
+export type MyWishlistNavigatorNavProps = CompositeNavigationProp<
+  BottomTabNavigationProp<BottomTabNavigatorProps, 'MyWishlistNavigator'>,
   StackNavigationProp<RootNavigatorProps>
 >;
 const ID_ADS_BANNER = Platform?.OS === 'ios' ? IOS_BANNER : ANDROID_BANNER;

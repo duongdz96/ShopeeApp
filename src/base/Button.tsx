@@ -51,7 +51,7 @@ const getBorderRadius = (type?: ButtonRadius) => {
 const getWidth = (type?: ButtonType) => {
   switch (type) {
     case 'medium':
-      return SCREEN_WIDTH / 2 - 24;
+      return SCREEN_WIDTH / 2 - 90;
     case 'big':
       return SCREEN_WIDTH - 72;
     case 'modal':
