@@ -34,8 +34,9 @@ import NotificationNavigator, {
 } from './NotificationNavigator';
 import ProfileNavigator, { ProfileNavigatorProps } from './ProfileNavigator';
 import { RootNavigatorProps } from './RootNavigator';
-import { MyCartNavigatorProps } from './MyCartNavigator';
+import MyCartNavigator, { MyCartNavigatorProps } from './MyCartNavigator';
 import { UseHandlerContext } from 'react-native-reanimated/lib/typescript/reanimated2/hook/utils';
+import MyWishlistNavigator from './MyWishListNavigator';
 
 export type BottomTabNavigatorProps = {
   HomeNavigator: NavigatorScreenParams<HomeNavigatorProps> | undefined;
@@ -98,6 +99,10 @@ export type NotificationNavigatorRouteProps = RouteProp<
 export type MyCartNavigatorNavProps = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabNavigatorProps, 'MyCartNavigator'>,
   StackNavigationProp<RootNavigatorProps>
+>;
+export type MyCartNavigatorRouteProps = RouteProp<
+  BottomTabNavigatorProps,
+  'MyCartNavigator'
 >;
 export type MyWishlistNavigatorNavProps = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabNavigatorProps, 'MyWishlistNavigator'>,

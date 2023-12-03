@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BackHandler,
@@ -25,6 +25,7 @@ import { useAppTheme } from '~/resources/theme';
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '~/base/Button';
+import { PreferenceActionsContext } from '~/contextStore/ActionPreferenceContext';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -36,7 +37,7 @@ const MyWishlistPage = ({route}): JSX.Element => {
   const { openModal } = useModalManager();
   const resultContext = usePreferenceContext();
   const topInsets = useTopInset();
-
+  const [quantity, setQuantity] = useState(1);
   useFocusEffect(
     React.useCallback(() => {
       let backButtonPressCount = 0;
@@ -96,12 +97,18 @@ const MyWishlistPage = ({route}): JSX.Element => {
   // }, []);
 
   const {carDetails} = route.params;
+  const {getDataCar} = useContext(PreferenceActionsContext);
+  const {getTotalPrice} = useContext(PreferenceActionsContext);
+  const handelAddToCart = () => {
+    getDataCar(carDetails.brand, carDetails.model, carDetails.year, carDetails.price);
+    navigation.navigate('My Cart');
+  }
   return (
     <SafeAreaView style={styleContainer}>
       <View style={{
-        marginBottom: 500,
+        
       }}>
-        <Image source={{uri: carDetails.image}} style={{width: 100, height: 100}}/>
+        <Image source={{uri: carDetails.image}} style={{width: 200, height: 200}}/>
         <Text style={styles.textItem}>Brand: {carDetails.brand}</Text>
         <Text style={styles.textItem}>Model: {carDetails.model}</Text>
         <Text style={styles.textItem}>Year: {carDetails.year}</Text>
@@ -113,7 +120,7 @@ const MyWishlistPage = ({route}): JSX.Element => {
             type='modal'
             mode='orange'
             textColor='#FFFFFF'
-            onPress={() => navigation.navigate('My Cart')}
+            onPress={handelAddToCart}
           >
            Add to cart
           </Button>

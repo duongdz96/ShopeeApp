@@ -10,30 +10,53 @@ import React, {
 import useCallbackRef from '~/hooks/useCallbackRef';
 
 type ActionProps = {
-  countApp: number;
+  id: string,
+  brand: string,
+  model: string,
+  year: number,
+  price: number, 
+  image: string,
+  total: number,
 };
 
 type State = {
   result: ActionProps;
 };
 
-type Action = {
-  type: 'COUNT_APP';
-  payload: {
-    countApp: number;
-  };
-};
+type Action =
+  | {
+      type: 'ADD_TO_CART';
+      payload: {
+        brand: string,
+        model: string,
+        year: number,
+        price: number,
+      };
+    }
+  | {
+      type: 'CALCULATE_PRICE';
+      payload: {
+        total: number,
+      };
+    };
 
 type PreferenceActionsContextProps = {
   getActionStatePref: () => ActionProps;
-  setActionCountApp?: (item: number) => void;
+  getDataCar : (item1: string, item2: string, item3: number, item4: number) => void;
+  getTotalPrice : (item: number) => void;
   //Base preference action
 };
 
 type PreferenceContextProps = State;
 
 const initialState: ActionProps = {
-  countApp: 0,
+  id: '',
+  brand: '',
+  model: '',
+  year: 0,
+  price: 0,
+  total: 0,
+  image: '',
   //Base initial state
 };
 
@@ -41,9 +64,15 @@ const reducer = (state: State, action: Action): State => {
   const nextState = { ...state };
 
   switch (action.type) {
-    case 'COUNT_APP':
-      nextState.result.countApp = action.payload.countApp;
+    case 'ADD_TO_CART':
+      nextState.result.brand = action.payload.brand;
+      nextState.result.model = action.payload.model;
+      nextState.result.year = action.payload.year;
+      nextState.result.price = action.payload.price;
       break;
+    case 'CALCULATE_PRICE':
+      nextState.result.total = action.payload.total;
+        
   }
 
   return nextState;
@@ -52,6 +81,8 @@ const reducer = (state: State, action: Action): State => {
 export const PreferenceActionsContext =
   createContext<PreferenceActionsContextProps>({
     getActionStatePref: () => initialState,
+    getDataCar: ()=> {},
+    getTotalPrice:()=>{},
   });
 
 export const PreferenceContext = createContext<PreferenceContextProps>({
@@ -68,11 +99,23 @@ const ActionPreferenceProvider = ({
 
   const getActionStatePref = useCallbackRef(() => state.result);
 
-  const setActionCountApp = useCallbackRef((dataPlayer: number) => {
+  const getDataCar = useCallbackRef((item1: string, item2: string, item3: number, item4: number) => {
     setState({
-      type: 'COUNT_APP',
+      type: 'ADD_TO_CART',
       payload: {
-        countApp: dataPlayer,
+        brand: item1,
+        model: item2,
+        year: item3,
+        price: item4,
+      },
+    });
+  });
+
+  const getTotalPrice = useCallbackRef((item: number) => {
+    setState({
+      type: 'CALCULATE_PRICE',
+      payload: {
+        total: item,
       },
     });
   });
@@ -80,7 +123,8 @@ const ActionPreferenceProvider = ({
   const actionValues = useMemo(
     () => ({
       getActionStatePref,
-      setActionCountApp,
+      getDataCar,
+      getTotalPrice,
     }),
     [],
   );
