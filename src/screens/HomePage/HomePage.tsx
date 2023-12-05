@@ -35,6 +35,7 @@ import Button from '~/base/Button';
 import {collection, getDocs} from 'firebase/firestore'
 import { FIREBASE_DB } from '~/Firebase/UserData'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getDatabase, onValue, ref } from 'firebase/database';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -113,7 +114,6 @@ const HomePage = (): JSX.Element => {
     require('~/resources/images/banner.png'),
     require('~/resources/images/banner.png'),
   ];
-
   return (
     <ScrollView style={styleContainer}>
       <View style={styles.headers}>
@@ -162,8 +162,8 @@ const HomePage = (): JSX.Element => {
           shadowOpacity: 0.3,
           shadowRadius: 19,
           elevation: 4,
+          justifyContent: 'center',
         }}>
-
       </View>
       <View style={styles.viewCategory}>
         <View style={styles.boxView}>

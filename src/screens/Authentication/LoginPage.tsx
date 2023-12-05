@@ -58,6 +58,8 @@ const LoginPage = (): JSX.Element => {
       const response = await signInWithEmailAndPassword(auth, email, password);
       const userName = response.user.displayName;
       await AsyncStorage.setItem('userName', userName);
+      const userId = response.user.uid; // or response.user.email
+      await AsyncStorage.setItem('userId', userId);
       navigation.navigate('BottomTabNavigator');
       console.log(response);
     }catch (error) {

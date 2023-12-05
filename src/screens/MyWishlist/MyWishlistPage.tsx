@@ -26,6 +26,7 @@ import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '~/base/Button';
 import { PreferenceActionsContext } from '~/contextStore/ActionPreferenceContext';
+import {getDatabase, ref, set, onValue, increment, Database} from 'firebase/database'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -80,29 +81,24 @@ const MyWishlistPage = ({route}): JSX.Element => {
     ],
     [theme],
   );
-  // const [car, setCar] = useState('');
-  // useEffect(() => {
-  //   const getSelectedCar = async () => {
-  //     try {
-  //       const savedCar = await AsyncStorage.getItem('selectedCar');
-  //       if (savedCar) {
-  //         setCar(JSON.parse(savedCar));
-  //       }
-  //     } catch (error) {
-  //       console.error('Error retrieving data', error);
-  //     }
-  //   };
-
-  //   getSelectedCar();
-  // }, []);
-
   const {carDetails} = route.params;
   const {getDataCar} = useContext(PreferenceActionsContext);
   const {getTotalPrice} = useContext(PreferenceActionsContext);
-  const handelAddToCart = () => {
-    getDataCar(carDetails.brand, carDetails.model, carDetails.year, carDetails.price);
-    navigation.navigate('My Cart');
-  }
+  
+  const [count, setCount] = useState(0);
+  
+  const handelAddToCart = async () => {
+    // getDataCar(carDetails.brand, carDetails.model, carDetails.year, carDetails.price);
+    try {
+      const existingCart = await AsyncStorage.getItem('cart');
+      const cart = existingCart ? JSON.parse(existingCart) : [];
+      cart.push(carDetails); // Add new car
+      await AsyncStorage.setItem('cart', JSON.stringify(cart));
+    }catch(error){
+      console.error('Error saving data', error);
+    }
+    // navigation.navigate('My Cart');
+  };
   return (
     <SafeAreaView style={styleContainer}>
       <View style={{

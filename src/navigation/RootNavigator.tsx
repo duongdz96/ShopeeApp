@@ -105,7 +105,7 @@ const RootNavigator = (): JSX.Element => {
             lineHeight: 31.69,
             color: '#3E4958'
           },
-          headerShadowVisible: false
+          headerShadowVisible: false,
         }}
       />
       <StackNavigator.Screen

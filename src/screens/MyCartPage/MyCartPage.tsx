@@ -2,8 +2,10 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  Animated,
   BackHandler,
   Dimensions,
+  FlatList,
   Image,
   Platform,
   SafeAreaView,
@@ -27,6 +29,9 @@ import { useAppTheme } from '~/resources/theme';
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PreferenceContext } from '~/contextStore/ActionPreferenceContext';
+import Button from '~/base/Button';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { FIREBASE_AUTH } from '~/Firebase/UserData';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -82,19 +87,46 @@ const MyCartPage = (): JSX.Element => {
     [theme],
   );
   const [cart, setCart] = useState([]);
+  const [total, setTotal] = useState(0);
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const cartData = await AsyncStorage.getItem('cart');
+        if (cartData) {
+          setCart(JSON.parse(cartData));
+        }
+      } catch (error) {
+        console.error('Error retrieving data', error);
+      }
+    };
+  
+    fetchCart();
+  }, []);
+  
+ const [search, setSearch] = useState('');
+ const {result} = useContext(PreferenceContext);
+ //clear my cart if use different account
 
-useEffect(() => {
-  const fetchCart = async () => {
-    const cartData = await AsyncStorage.getItem('cart');
-    if (cartData) {
-      setCart(JSON.parse(cartData));
+const handleDelete = async (itemId) => {
+  const newCart = cart.filter(item => item.id !== itemId);
+  setCart(newCart);
+  await AsyncStorage.setItem('cart', JSON.stringify(newCart));
+};
+ //double click and delete
+ const handleDoubleClick = (item) => {
+  let lastTap = null;
+
+  return () => {
+    const now = Date.now();
+    if (lastTap && (now - lastTap) < 300) { // 300ms between double taps
+      handleDelete(item.id);
+      lastTap = null;
+    } else {
+      lastTap = now;
     }
   };
+};
 
-  fetchCart();
-}, []);
-const [search, setSearch] = useState('');
-const {result} = useContext(PreferenceContext);
   return (
     <ScrollView style={styleContainer}>
       <View style={styles.header}>
@@ -112,9 +144,55 @@ const {result} = useContext(PreferenceContext);
         onChangeText={setSearch}
         placeholder='Search'
       />
-      <Text>{result.brand}</Text>
-      <Text>{result.model}</Text>
-      <Text>{result.year}</Text>
+      <FlatList
+       data={cart}
+       keyExtractor={(item) => item.id}
+       renderItem={({ item }) => (
+       <TouchableOpacity style={styles.cardView} onPress={handleDoubleClick(item)}>
+         <View style={{
+          flexDirection: 'row',
+          padding: 5,
+         }}>
+          <Image source={{uri: item.image}} style={{
+            width: 92.59,
+            height: 100,
+            borderRadius: 7.41,
+            borderWidth: 0.37,
+            borderColor: '#D5DDE0',
+          }}/>
+          <View style={{
+            paddingHorizontal: 30,
+            paddingVertical: 10,
+          }}>
+            <Text style={{
+              fontFamily: 'Montserrat',
+              fontWeight: '600',
+              fontSize: 14,
+              lineHeight: 17.07,
+              color: '#3E4958',
+              marginBottom: 5,
+            }}>{item.brand}</Text>
+            <Text style={{
+              fontFamily: 'Montserrat',
+              fontWeight: '700',
+              fontSize: 14,
+              lineHeight: 17.07,
+              color: '#3E4958'
+            }}>${item.price}</Text>
+          </View>
+         </View>
+       </TouchableOpacity>
+        )}
+      />
+      <View style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <Button
+       type='modal'
+       mode='orange'
+      >Check out</Button>
+      </View>
     </ScrollView>
   );
 };
@@ -135,7 +213,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'left',
     padding: 12,
-    marginBottom: 40,
+    marginBottom: 25,
   },
   cardView: {
     width: 303,
@@ -145,5 +223,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F8F9',
     borderColor: '#D5DDE0',
     alignSelf: 'center',
+    marginBottom: 15,
+  },
+  rightAction: {
+
+  },
+  actionText: {
+    
   }
 });

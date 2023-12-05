@@ -25,6 +25,7 @@ import { useAppTheme } from '~/resources/theme';
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '~/base/Button';
+import { getAuth, signOut } from 'firebase/auth';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -90,6 +91,19 @@ const SettingPage = (): JSX.Element => {
     };
     getUserName();
   }, []);
+  const handleLogout = async () => {
+    try {
+      const auth = getAuth();
+      await signOut(auth);
+      await AsyncStorage.removeItem('userId');
+      await AsyncStorage.removeItem('cart');
+      navigation.navigate('SplashPage');
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
+  }
+  
+  
   return (
     <SafeAreaView style={styleContainer}>
       <View style={styles.editProfile}>
@@ -257,6 +271,13 @@ const SettingPage = (): JSX.Element => {
             backgroundColor: '#D5DDE0',
             alignSelf: 'center'
           }}></View>
+      </View>
+      <View>
+        <Button
+         type='modal'
+         mode='orange'
+         onPress={handleLogout}
+        >Log out</Button>
       </View>
     </SafeAreaView>
   );
