@@ -26,6 +26,7 @@ import NewPassword from '~/screens/Authentication/NewPassword';
 import PasswordReset from '~/screens/Authentication/PasswordReset';
 import MyCartPage from '~/screens/MyCartPage/MyCartPage';
 import MyWishlistPage from '~/screens/MyWishlist/MyWishlistPage';
+import CheckOutPage from '~/screens/CheckOutPage/CheckOutPage';
 
 export type RootNavigatorProps = {
   navigate(arg0: string): unknown;
@@ -124,6 +125,24 @@ const RootNavigator = (): JSX.Element => {
             color: '#3E4958'
           },
           headerShadowVisible: false
+        }}
+      />
+      <StackNavigator.Screen
+        name='Check out'
+        component={CheckOutPage}
+        options={{
+          gestureEnabled: false,
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: theme.colors.backgroundColorChild,
+          },
+          headerTitleStyle: {
+            fontSize: 26,
+            fontWeight: '600',
+            lineHeight: 31.69,
+            color: '#3E4958'
+          },
+          headerShadowVisible: false,
         }}
       />
       <StackNavigator.Screen

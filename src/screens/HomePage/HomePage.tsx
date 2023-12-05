@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BackHandler,
@@ -36,6 +36,10 @@ import {collection, getDocs} from 'firebase/firestore'
 import { FIREBASE_DB } from '~/Firebase/UserData'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getDatabase, onValue, ref } from 'firebase/database';
+import { PreferenceContext } from '~/contextStore/ActionPreferenceContext';
+import IconCircle from '~/resources/Icons/IconCircle';
+import IconScanCam from '~/resources/Icons/IconCamera/IconScanCam';
+import IconBack from '~/resources/Icons/IconBack';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -48,6 +52,7 @@ const HomePage = (): JSX.Element => {
   const resultContext = usePreferenceContext();
   const topInsets = useTopInset();
   const [data, setData] = useState([]);
+  const {result} = useContext(PreferenceContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -126,11 +131,17 @@ const HomePage = (): JSX.Element => {
            placeholder='Search'
            style={styles.searchBar}
           />
-          <IconShoppingCard
-           style={{marginTop: 4,
-          }}
-          onPress = {() => navigation.navigate('My Cart')}
-          />
+          <View>
+            <IconShoppingCard
+              style={{
+                marginTop: 4,
+             }}
+              onPress = {() => navigation.navigate('My Cart')}
+            />
+            {result.count > 0 && (
+              <Text style={{backgroundColor:'#FF5F00', width: 18, height: 18, borderRadius: 10, borderColor: '#FFFFFF', borderWidth: 1, textAlign:'center', position:'absolute', color: '#FFFFFF', top: 0, right: 15,}}>{result.count}</Text>
+            )}
+          </View>
           <IconNotification
            style={{marginTop: 4}}
            onPress={() => console.log('Notifications')}
@@ -162,8 +173,59 @@ const HomePage = (): JSX.Element => {
           shadowOpacity: 0.3,
           shadowRadius: 19,
           elevation: 4,
-          justifyContent: 'center',
+          //justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'row'
         }}>
+          <View style={{
+            padding: 15,
+          }}>
+            <IconScanCam/>
+          </View>
+          <View style={{width: 1, height: 35, backgroundColor: '#C4C4C454', marginRight: 15,}}></View>
+          <View>
+            <Image source={require('~/resources/images/bi_wallet2.png')} style={{width: 26,height: 26, marginRight: 8,}}/>
+          </View>
+          <View style={{
+            marginRight: 30,
+          }}>
+            <Text style={{
+              fontFamily: 'Roboto',
+              fontWeight: '400',
+              fontSize: 14,
+              lineHeight: 16.41,
+              color: '#000000'
+            }}>Rp4.982.000</Text>
+            <Text style={{
+              fontFamily: 'Roboto',
+              fontWeight: '300',
+              fontSize: 5,
+              lineHeight: 5.86,
+              color: '#000000'
+            }}>Isi Saldo ShopeePay</Text>
+          </View>
+          <View style={{width: 1, height: 35, backgroundColor: '#C4C4C454', marginRight: 15,}}></View>
+          <View>
+            <Image source={require('~/resources/images/bi_wallet3.png')} style={{width: 22, height: 22, marginRight: 8}}/>
+          </View>
+          <View style={{
+            marginRight: 30,
+          }}>
+            <Text style={{
+              fontFamily: 'Roboto',
+              fontWeight: '400',
+              fontSize: 14,
+              lineHeight: 16.41,
+              color: '#000000'
+            }}>928.300 Koin</Text>
+            <Text style={{
+              fontFamily: 'Roboto',
+              fontWeight: '300',
+              fontSize: 5,
+              lineHeight: 5.86,
+              color: '#000000'
+            }}>Klaim koin di sini</Text>
+          </View>
       </View>
       <View style={styles.viewCategory}>
         <View style={styles.boxView}>
@@ -179,7 +241,6 @@ const HomePage = (): JSX.Element => {
           <Image source={require('~/resources/images/bankIcon.png')} style={{width: 41, height: 43}}/>
         </View>
       </View>
-      
       <View style={styles.itemView}>
         <View style={{
           flexDirection: 'row',
@@ -224,6 +285,32 @@ const HomePage = (): JSX.Element => {
                 </TouchableOpacity>
                )}
             />
+            <View style={{
+              width: 167,
+              height: 23,
+              backgroundColor: '#FFFFFF',
+              borderRadius: 19,
+              position: 'absolute',
+              top: -10,
+              shadowColor: 'black',
+              shadowOffset: {
+                  width: -2,
+                  height: 4,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3,
+              elevation: 5,
+              marginLeft: 20,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <Text style={{
+                fontWeight: '900',
+                fontSize: 14,
+                lineHeight: 16.8,
+                color: '#FF5F00'
+              }}>12.12 Super BrandDay</Text>
+             </View> 
       </View>
     </ScrollView>
   );

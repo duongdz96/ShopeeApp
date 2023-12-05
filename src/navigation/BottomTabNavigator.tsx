@@ -37,6 +37,7 @@ import { RootNavigatorProps } from './RootNavigator';
 import MyCartNavigator, { MyCartNavigatorProps } from './MyCartNavigator';
 import { UseHandlerContext } from 'react-native-reanimated/lib/typescript/reanimated2/hook/utils';
 import MyWishlistNavigator from './MyWishListNavigator';
+import { CheckOutNavigatorProps } from './CheckOutNavigator';
 
 export type BottomTabNavigatorProps = {
   HomeNavigator: NavigatorScreenParams<HomeNavigatorProps> | undefined;
@@ -47,6 +48,7 @@ export type BottomTabNavigatorProps = {
   ProfileNavigator: NavigatorScreenParams<ProfileNavigatorProps> | undefined;
   MyCartNavigator: NavigatorScreenParams<MyCartNavigatorProps> | undefined;
   MyWishlistNavigator: NavigatorScreenParams<MyCartNavigatorProps> | undefined;
+  CheckOutNavigator: NavigatorScreenParams<CheckOutNavigatorProps> | undefined;
 };
 
 export type BottomTabNavigatorRouteProps = RouteProp<BottomTabNavigatorProps>;
@@ -106,6 +108,14 @@ export type MyCartNavigatorRouteProps = RouteProp<
 >;
 export type MyWishlistNavigatorNavProps = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabNavigatorProps, 'MyWishlistNavigator'>,
+  StackNavigationProp<RootNavigatorProps>
+>;
+export type CheckOutNavigatorRouteProps = RouteProp<
+  BottomTabNavigatorProps,
+  'CheckOutNavigator'
+>;
+export type CheckOutNavigatorNavProps = CompositeNavigationProp<
+  BottomTabNavigationProp<BottomTabNavigatorProps, 'CheckOutNavigator'>,
   StackNavigationProp<RootNavigatorProps>
 >;
 const ID_ADS_BANNER = Platform?.OS === 'ios' ? IOS_BANNER : ANDROID_BANNER;

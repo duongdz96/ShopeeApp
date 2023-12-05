@@ -28,10 +28,11 @@ import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { PreferenceContext } from '~/contextStore/ActionPreferenceContext';
+import { PreferenceActionsContext, PreferenceContext } from '~/contextStore/ActionPreferenceContext';
 import Button from '~/base/Button';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from '~/Firebase/UserData';
+import ButtonCustom from '~/base/ButtonCustom';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -88,6 +89,7 @@ const MyCartPage = (): JSX.Element => {
   );
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -105,11 +107,14 @@ const MyCartPage = (): JSX.Element => {
   
  const [search, setSearch] = useState('');
  const {result} = useContext(PreferenceContext);
- //clear my cart if use different account
+ const {getNumberItem} = useContext(PreferenceActionsContext);
+ const [code, setCode] = useState('');
 
+ //clear my cart if use different account
 const handleDelete = async (itemId) => {
   const newCart = cart.filter(item => item.id !== itemId);
   setCart(newCart);
+  getNumberItem(newCart.length);
   await AsyncStorage.setItem('cart', JSON.stringify(newCart));
 };
  //double click and delete
@@ -151,7 +156,8 @@ const handleDelete = async (itemId) => {
        <TouchableOpacity style={styles.cardView} onPress={handleDoubleClick(item)}>
          <View style={{
           flexDirection: 'row',
-          padding: 5,
+          paddingHorizontal: 10,
+          paddingVertical: 5,
          }}>
           <Image source={{uri: item.image}} style={{
             width: 92.59,
@@ -185,12 +191,62 @@ const handleDelete = async (itemId) => {
         )}
       />
       <View style={{
+        flexDirection: 'row',
+        marginLeft: 60,
+        marginBottom: 20,
+      }}>
+        <TextInput
+          placeholder='Enter code voucher'
+          value={code}
+          onChangeText={setCode}
+          style={{
+            width: 189,
+            height: 60,
+            borderRadius: 14,
+            borderWidth: 0.5,
+            borderColor: '#D5DDE0',
+            backgroundColor: '#F7F8F9',
+            marginRight: 10,
+          }}
+          placeholderTextColor='#D5DDE0'
+        />
+        <Button
+         type='small'
+         mode='orange'
+         textColor='#FFFFFF'
+        >Apply</Button>
+      </View>
+
+      <View style={{
+        flexDirection: 'row',
+        marginLeft: 60,
+        marginBottom: 20,
+      }}>
+        <Text style={{
+          fontFamily: 'Montserrat',
+          fontWeight: '700',
+          fontSize: 16,
+          lineHeight: 19.5,
+          marginRight: '55%'
+        }}>In total</Text>
+        <Text style={{
+          fontFamily: 'Montserrat',
+          fontWeight: '700',
+          fontSize: 16,
+          lineHeight: 19.5,
+          marginRight: '50%'
+        }}>$</Text>
+      </View>
+
+      <View style={{
         justifyContent: 'center',
         alignItems: 'center',
       }}>
       <Button
        type='modal'
        mode='orange'
+       textColor='#FFFFFF'
+       onPress={() => navigation.navigate('Check out')}
       >Check out</Button>
       </View>
     </ScrollView>
@@ -223,7 +279,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F7F8F9',
     borderColor: '#D5DDE0',
     alignSelf: 'center',
-    marginBottom: 15,
+    marginBottom: 30,
   },
   rightAction: {
 

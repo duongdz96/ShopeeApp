@@ -17,6 +17,7 @@ type ActionProps = {
   price: number, 
   image: string,
   total: number,
+  count: number,
 };
 
 type State = {
@@ -33,17 +34,26 @@ type Action =
         price: number,
       };
     }
+
   | {
       type: 'CALCULATE_PRICE';
       payload: {
         total: number,
       };
-    };
+    }
+
+  | {
+      type: 'COUNT_CART';
+      payload: {
+        count: number,
+      };
+    }  
 
 type PreferenceActionsContextProps = {
   getActionStatePref: () => ActionProps;
   getDataCar : (item1: string, item2: string, item3: number, item4: number) => void;
   getTotalPrice : (item: number) => void;
+  getNumberItem: (item: number) => void;
   //Base preference action
 };
 
@@ -57,6 +67,7 @@ const initialState: ActionProps = {
   price: 0,
   total: 0,
   image: '',
+  count: 0,
   //Base initial state
 };
 
@@ -72,9 +83,11 @@ const reducer = (state: State, action: Action): State => {
       break;
     case 'CALCULATE_PRICE':
       nextState.result.total = action.payload.total;
-        
+      break;
+    case 'COUNT_CART':
+      nextState.result.count = action.payload.count;
+      break;
   }
-
   return nextState;
 };
 
@@ -83,6 +96,7 @@ export const PreferenceActionsContext =
     getActionStatePref: () => initialState,
     getDataCar: ()=> {},
     getTotalPrice:()=>{},
+    getNumberItem: () => {},
   });
 
 export const PreferenceContext = createContext<PreferenceContextProps>({
@@ -119,12 +133,21 @@ const ActionPreferenceProvider = ({
       },
     });
   });
+  const getNumberItem = useCallbackRef((item: number) => {
+    setState({
+      type: 'COUNT_CART',
+      payload: {
+        count: item,
+      }
+    })
+  })
 
   const actionValues = useMemo(
     () => ({
       getActionStatePref,
       getDataCar,
       getTotalPrice,
+      getNumberItem,
     }),
     [],
   );
