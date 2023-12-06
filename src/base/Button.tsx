@@ -84,7 +84,7 @@ const Button = ({
       case 'strong':
         return '#0057E7';
       case 'light':
-        return '#35383F';
+        return '#D5DDE0';
       case 'white':
         return '#ffffff';
       case 'orange': 

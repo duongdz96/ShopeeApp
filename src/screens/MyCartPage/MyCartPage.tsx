@@ -131,7 +131,15 @@ const handleDelete = async (itemId) => {
     }
   };
 };
-
+const handleOrder = async (itemId) => {
+  try {
+    await AsyncStorage.removeItem('cart');
+    navigation.navigate('Check out');
+    getNumberItem(0);
+  } catch (error) {
+    console.error('Logout failed', error);
+  }
+}
   return (
     <ScrollView style={styleContainer}>
       <View style={styles.header}>
@@ -167,7 +175,7 @@ const handleDelete = async (itemId) => {
             borderColor: '#D5DDE0',
           }}/>
           <View style={{
-            paddingHorizontal: 30,
+            paddingHorizontal: 10,
             paddingVertical: 10,
           }}>
             <Text style={{
@@ -246,8 +254,8 @@ const handleDelete = async (itemId) => {
        type='modal'
        mode='orange'
        textColor='#FFFFFF'
-       onPress={() => navigation.navigate('Check out')}
-      >Check out</Button>
+       onPress={handleOrder}
+      >Order</Button>
       </View>
     </ScrollView>
   );

@@ -277,11 +277,69 @@ const HomePage = (): JSX.Element => {
                  style={styles.itemList} 
                  onPress={() => navigation.navigate('My Wishlist', {carDetails: item})}
                 >
-                 <Image source={{uri: item.image}} style={{width: 125, height: 135,}}/>
+                 <Image source={{uri: item.image}} style={{width: 125, height: 135, alignSelf: 'center'}}/>
                  <Text style={styles.textItem}>{item.brand}</Text>
-                 <Text style={styles.textItem}>{item.model}</Text>
-                 <Text style={styles.textItem}>{item.year}</Text>
-                 <Text style={styles.textItem}>${item.price}</Text>
+                 <View style={{flexDirection: 'row'}}>
+                    <View style={{
+                      width: 36,
+                      height: 12,
+                      borderRadius: 6,
+                      backgroundColor: '#FF5F00',
+                      marginRight: 3,
+                    }}>
+                      <Text style={{
+                        fontSize: 9,
+                        fontWeight: '800',
+                        lineHeight: 10.8,
+                        color: '#FFFFFF',
+                        alignSelf: 'center'
+                      }}>12.12</Text>
+                    </View>
+                    <View style={{
+                      width: 35,
+                      height: 12,
+                      borderRadius: 6,
+                      backgroundColor: '#00D3A1',
+                      marginRight: 3,
+                    }}>
+                      <Text style={{
+                        fontSize: 4,
+                        fontWeight: '800',
+                        lineHeight: 10.8,
+                        color: '#FFFFFF',
+                        alignSelf: 'center'
+                      }}>GRATIS</Text>
+                      <Text style={{
+                        fontSize: 4,
+                        fontWeight: '800',
+                        lineHeight: 4.8,
+                        color: '#FFFFFF',
+                      }}>ONGKIR</Text>
+                    </View>
+                    <View style={{
+                      width: 36,
+                      height: 12,
+                      borderRadius: 6,
+                      backgroundColor: '#FF5F00',
+                      marginRight: 3,
+                    }}>
+                      <Text style={{
+                        fontSize: 9,
+                        fontWeight: '800',
+                        lineHeight: 10.8,
+                        color: '#FFFFFF',
+                        alignSelf: 'center'
+                      }}>12.12</Text>
+                    </View>
+                 </View>
+                 <Text style={{
+                  position: 'absolute',
+                  bottom: 10,
+                  fontSize: 12,
+                  fontFamily: 'Montserrat',
+                  fontWeight: '700',
+                  color: '#FF5F00',
+                 }}>${item.price}</Text>
                 </TouchableOpacity>
                )}
             />
@@ -373,7 +431,7 @@ const styles = StyleSheet.create({
   },
   itemList: {
     marginRight: 15,
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: '#FEFEFE',
     height: 233,
     width: 140,
@@ -383,5 +441,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: 12,
     color: '#3E4958',
+    marginBottom: 30,
+    paddingHorizontal: 10,
   }
 });

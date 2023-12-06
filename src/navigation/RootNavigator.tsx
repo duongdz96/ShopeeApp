@@ -112,37 +112,13 @@ const RootNavigator = (): JSX.Element => {
       <StackNavigator.Screen
         name='My Wishlist'
         component={MyWishlistPage}
-        options={{
-          gestureEnabled: false,
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: theme.colors.backgroundColorChild,
-          },
-          headerTitleStyle: {
-            fontSize: 26,
-            fontWeight: '600',
-            lineHeight: 31.69,
-            color: '#3E4958'
-          },
-          headerShadowVisible: false
-        }}
+        options={{gestureEnabled: false}}
       />
       <StackNavigator.Screen
         name='Check out'
         component={CheckOutPage}
         options={{
           gestureEnabled: false,
-          headerShown: true,
-          headerStyle: {
-            backgroundColor: theme.colors.backgroundColorChild,
-          },
-          headerTitleStyle: {
-            fontSize: 26,
-            fontWeight: '600',
-            lineHeight: 31.69,
-            color: '#3E4958'
-          },
-          headerShadowVisible: false,
         }}
       />
       <StackNavigator.Screen
