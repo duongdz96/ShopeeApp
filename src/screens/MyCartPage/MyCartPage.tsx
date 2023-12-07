@@ -131,7 +131,7 @@ const handleDelete = async (itemId) => {
     }
   };
 };
-const handleOrder = async (itemId) => {
+const handleOrder = async () => {
   try {
     await AsyncStorage.removeItem('cart');
     navigation.navigate('Check out');
@@ -139,6 +139,9 @@ const handleOrder = async (itemId) => {
   } catch (error) {
     console.error('Logout failed', error);
   }
+}
+const handleCalculateItem = () => {
+  
 }
   return (
     <ScrollView style={styleContainer}>
