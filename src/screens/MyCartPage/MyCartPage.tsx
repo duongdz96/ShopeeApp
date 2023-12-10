@@ -44,6 +44,11 @@ const MyCartPage = (): JSX.Element => {
   const { openModal } = useModalManager();
   const resultContext = usePreferenceContext();
   const topInsets = useTopInset();
+  const {getTotalPrice} = useContext(PreferenceActionsContext);
+  const [search, setSearch] = useState('');
+  const {result} = useContext(PreferenceContext);
+  const {getNumberItem} = useContext(PreferenceActionsContext);
+  const [code, setCode] = useState('');
 
   useFocusEffect(
     React.useCallback(() => {
@@ -88,14 +93,24 @@ const MyCartPage = (): JSX.Element => {
     [theme],
   );
   const [cart, setCart] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const calculateTotalPrice = (cartItems) => {
+    let total = 0;
+    cartItems.forEach((item) => {
+    total += item.price;
+  });
+    return total;
+}
 
   useEffect(() => {
     const fetchCart = async () => {
       try {
         const cartData = await AsyncStorage.getItem('cart');
         if (cartData) {
-          setCart(JSON.parse(cartData));
+          const cartItems = JSON.parse(cartData);
+          setCart(cartItems);
+          const total = calculateTotalPrice(cartItems);
+          getTotalPrice(total);
         }
       } catch (error) {
         console.error('Error retrieving data', error);
@@ -105,10 +120,6 @@ const MyCartPage = (): JSX.Element => {
     fetchCart();
   }, []);
   
- const [search, setSearch] = useState('');
- const {result} = useContext(PreferenceContext);
- const {getNumberItem} = useContext(PreferenceActionsContext);
- const [code, setCode] = useState('');
 
  //clear my cart if use different account
 const handleDelete = async (itemId) => {
@@ -116,6 +127,8 @@ const handleDelete = async (itemId) => {
   setCart(newCart);
   getNumberItem(newCart.length);
   await AsyncStorage.setItem('cart', JSON.stringify(newCart));
+  const total = calculateTotalPrice(newCart);
+  getTotalPrice(total);
 };
  //double click and delete
  const handleDoubleClick = (item) => {
@@ -139,9 +152,6 @@ const handleOrder = async () => {
   } catch (error) {
     console.error('Logout failed', error);
   }
-}
-const handleCalculateItem = () => {
-  
 }
   return (
     <ScrollView style={styleContainer}>
@@ -246,12 +256,13 @@ const handleCalculateItem = () => {
           fontSize: 16,
           lineHeight: 19.5,
           marginRight: '50%'
-        }}>$</Text>
+        }}>${result.total}</Text>
       </View>
 
       <View style={{
         justifyContent: 'center',
         alignItems: 'center',
+        marginBottom: '8%',
       }}>
       <Button
        type='modal'

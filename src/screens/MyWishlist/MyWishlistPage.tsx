@@ -86,10 +86,7 @@ const MyWishlistPage = ({route}): JSX.Element => {
     [theme],
   );
   const {carDetails} = route.params;
-  const {getDataCar} = useContext(PreferenceActionsContext);
   const {getTotalPrice} = useContext(PreferenceActionsContext);
-  
-  const [count, setCount] = useState(0);
   const {getNumberItem} = useContext(PreferenceActionsContext);
   const handelAddToCart = async () => {
     // getDataCar(carDetails.brand, carDetails.model, carDetails.year, carDetails.price);
@@ -104,7 +101,7 @@ const MyWishlistPage = ({route}): JSX.Element => {
     }
     // navigation.navigate('My Cart');
   };
-  const {result} = useContext(PreferenceContext)
+  const {result} = useContext(PreferenceContext);
   return (
     <SafeAreaView style={styleContainer}>
       <Image source={{uri: carDetails.image}} style={{width:SCREEN_WIDTH, height: 300,borderBottomLeftRadius: 20, borderBottomRightRadius: 20}}/>

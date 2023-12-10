@@ -8,7 +8,7 @@ import {
   useColorScheme,
 } from 'react-native';
 import { Button as DefaultButton } from 'react-native-paper';
-import { IconSource } from 'react-native-paper/lib/typescript/components/Icon';
+import { IconSource } from 'react-native-paper/lib/typescript/src/components/Icon';
 
 type ButtonType = 'modal' | 'medium' | 'big' | 'small';
 type ButtonRadius = 'many' | 'little';

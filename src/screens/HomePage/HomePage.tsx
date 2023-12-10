@@ -120,7 +120,7 @@ const HomePage = (): JSX.Element => {
     require('~/resources/images/banner.png'),
   ];
   return (
-    <ScrollView style={styleContainer}>
+    <View style={styleContainer}>
       <View style={styles.headers}>
         <View style={{
           flexDirection: 'row',
@@ -370,7 +370,7 @@ const HomePage = (): JSX.Element => {
               }}>12.12 Super BrandDay</Text>
              </View> 
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BackHandler,
@@ -24,6 +24,8 @@ import { useAppTheme } from '~/resources/theme';
 
 import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import Button from '~/base/Button';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { PreferenceActionsContext } from '~/contextStore/ActionPreferenceContext';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -78,6 +80,16 @@ const CheckOutPage = (): JSX.Element => {
     ],
     [theme],
   );
+  const {getNumberItem} = useContext(PreferenceActionsContext);
+  const handleContinue = async () => {
+    try {
+      await AsyncStorage.removeItem('cart');
+      navigation.navigate('BottomTabNavigator');
+      getNumberItem(0);
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
+  }
   return (
     <SafeAreaView style={styleContainer}>
       <Image source={require('~/resources/images/orderSuccess.png')} style={{width: 110, height: 110, borderRadius: 110, marginBottom: 10}}/>
@@ -123,7 +135,7 @@ const CheckOutPage = (): JSX.Element => {
          type='modal'
          mode='orange'
          textColor='#FFFFFF'
-         onPress={()=>navigation.replace('BottomTabNavigator')}
+         onPress={handleContinue}
         >Continue Shopping</Button>
       </View>
     </SafeAreaView>

@@ -35,7 +35,6 @@ import NotificationNavigator, {
 import ProfileNavigator, { ProfileNavigatorProps } from './ProfileNavigator';
 import { RootNavigatorProps } from './RootNavigator';
 import MyCartNavigator, { MyCartNavigatorProps } from './MyCartNavigator';
-import { UseHandlerContext } from 'react-native-reanimated/lib/typescript/reanimated2/hook/utils';
 import MyWishlistNavigator from './MyWishListNavigator';
 import { CheckOutNavigatorProps } from './CheckOutNavigator';
 
