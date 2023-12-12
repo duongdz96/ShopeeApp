@@ -12,12 +12,13 @@ import useCallbackRef from '~/hooks/useCallbackRef';
 type ActionProps = {
   id: string,
   brand: string,
-  model: string,
-  year: number,
   price: number, 
   image: string,
   total: number,
   count: number,
+  userID: string,
+  database: Object,
+  
 };
 
 type State = {
@@ -29,8 +30,7 @@ type Action =
       type: 'ADD_TO_CART';
       payload: {
         brand: string,
-        model: string,
-        year: number,
+        image: string,
         price: number,
       };
     }
@@ -47,6 +47,18 @@ type Action =
       payload: {
         count: number,
       };
+    }
+  | {
+      type: 'GET_USER_ID';
+      payload: {
+        userID: string,
+      };
+    }
+  | {
+      type: 'SET_DATABASE';
+      payload: {
+        database: Object,
+      }
     }  
 
 type PreferenceActionsContextProps = {
@@ -54,6 +66,8 @@ type PreferenceActionsContextProps = {
   getDataCar : (item1: string, item2: string, item3: number, item4: number) => void;
   getTotalPrice : (item: number) => void;
   getNumberItem: (item: number) => void;
+  getUserID: (item: string) => void;
+  getDatabase: (item: object) => void;
   //Base preference action
 };
 
@@ -62,12 +76,12 @@ type PreferenceContextProps = State;
 const initialState: ActionProps = {
   id: '',
   brand: '',
-  model: '',
-  year: 0,
   price: 0,
   total: 0,
   image: '',
   count: 0,
+  userID: '',
+  database: {},
   //Base initial state
 };
 
@@ -77,8 +91,7 @@ const reducer = (state: State, action: Action): State => {
   switch (action.type) {
     case 'ADD_TO_CART':
       nextState.result.brand = action.payload.brand;
-      nextState.result.model = action.payload.model;
-      nextState.result.year = action.payload.year;
+      nextState.result.image = action.payload.image;
       nextState.result.price = action.payload.price;
       break;
     case 'CALCULATE_PRICE':
@@ -87,6 +100,11 @@ const reducer = (state: State, action: Action): State => {
     case 'COUNT_CART':
       nextState.result.count = action.payload.count;
       break;
+    case 'GET_USER_ID':
+      nextState.result.userID = action.payload.userID;
+      break;
+    case 'SET_DATABASE':
+      nextState.result.database = action.payload.database;
   }
   return nextState;
 };
@@ -97,6 +115,8 @@ export const PreferenceActionsContext =
     getDataCar: ()=> {},
     getTotalPrice:()=>{},
     getNumberItem: () => {},
+    getUserID: () => {},
+    getDatabase: () => {},
   });
 
 export const PreferenceContext = createContext<PreferenceContextProps>({
@@ -113,14 +133,13 @@ const ActionPreferenceProvider = ({
 
   const getActionStatePref = useCallbackRef(() => state.result);
 
-  const getDataCar = useCallbackRef((item1: string, item2: string, item3: number, item4: number) => {
+  const getDataCar = useCallbackRef((item1: string, item2: string, item3: number) => {
     setState({
       type: 'ADD_TO_CART',
       payload: {
         brand: item1,
-        model: item2,
-        year: item3,
-        price: item4,
+        image: item2,
+        price: item3,
       },
     });
   });
@@ -140,14 +159,31 @@ const ActionPreferenceProvider = ({
         count: item,
       }
     })
+  });
+  const getUserID = useCallbackRef((item: string) => {
+    setState({
+      type: 'GET_USER_ID',
+      payload: {
+        userID: item,
+      }
+    })
   })
-
+  const getDatabase = useCallbackRef((item: object) => {
+    setState({
+      type: 'SET_DATABASE',
+      payload: {
+        database: item,
+      }
+    })
+  })
   const actionValues = useMemo(
     () => ({
       getActionStatePref,
       getDataCar,
       getTotalPrice,
       getNumberItem,
+      getUserID,
+      getDatabase,
     }),
     [],
   );

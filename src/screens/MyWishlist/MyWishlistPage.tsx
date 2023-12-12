@@ -31,6 +31,8 @@ import {getDatabase, ref, set, onValue, increment, Database} from 'firebase/data
 import IconBack from '~/resources/Icons/IconBack';
 import IconShoppingCard from '~/resources/Icons/IconShoppingCart2'
 import IconNotification from '~/resources/Icons/IconNotification2'
+import { FIREBASE_DB } from '~/Firebase/UserData';
+import { collection, addDoc, getDocs, setDoc, doc, getDoc } from 'firebase/firestore';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -43,6 +45,13 @@ const MyWishlistPage = ({route}): JSX.Element => {
   const resultContext = usePreferenceContext();
   const topInsets = useTopInset();
   const [quantity, setQuantity] = useState(1);
+  const {carDetails} = route.params;
+  const {getTotalPrice} = useContext(PreferenceActionsContext);
+  const {getNumberItem} = useContext(PreferenceActionsContext);
+  const [cartItems, setCartItems] = useState(0);
+  const {result} = useContext(PreferenceContext);
+  const {getDatabase} = useContext(PreferenceActionsContext);
+  const {getDataCar} = useContext(PreferenceActionsContext);
   useFocusEffect(
     React.useCallback(() => {
       let backButtonPressCount = 0;
@@ -85,23 +94,62 @@ const MyWishlistPage = ({route}): JSX.Element => {
     ],
     [theme],
   );
-  const {carDetails} = route.params;
-  const {getTotalPrice} = useContext(PreferenceActionsContext);
-  const {getNumberItem} = useContext(PreferenceActionsContext);
   const handelAddToCart = async () => {
-    // getDataCar(carDetails.brand, carDetails.model, carDetails.year, carDetails.price);
+    const userUID =  result.userID;
     try {
-      const existingCart = await AsyncStorage.getItem('cart');
-      const cart = existingCart ? JSON.parse(existingCart) : [];
-      cart.push(carDetails); // Add new car
-      getNumberItem(cart.length);
-      await AsyncStorage.setItem('cart', JSON.stringify(cart));
+      const cartCollectionRef = collection(FIREBASE_DB, 'cart');
+      const cartItemData = {
+        brand: carDetails.brand,
+        image: carDetails.image,
+        price: carDetails.price,
+      };
+      await addDoc(cartCollectionRef, cartItemData);
+      console.log('Item added successfully');
+      const cartQuerySnapshot = await getDocs(cartCollectionRef);
+      const cartItemCount = cartQuerySnapshot.size;
+      getNumberItem(cartItemCount);
+
     }catch(error){
       console.error('Error saving data', error);
     }
     // navigation.navigate('My Cart');
   };
-  const {result} = useContext(PreferenceContext);
+  const handelAddFavor = async () => {
+    const userUID = result.userID;
+    try {
+      const cartCollectionRef = collection(FIREBASE_DB, 'favorite');
+      const cartItemData = {
+        brand: carDetails.brand,
+        image: carDetails.image,
+        price: carDetails.price,
+      };
+      getDatabase(cartItemData);
+      if (userUID) {
+        const userDocRef =  doc(cartCollectionRef, userUID);
+        const userDocSnapshot = await getDoc(userDocRef);
+        const currentFavor = userDocSnapshot.exists() ? userDocSnapshot.data().favorites || [] : [];
+        const existingIndex = currentFavor.findIndex(item => (
+          item.brand === cartItemData.brand && 
+          item.image === cartItemData.image &&
+          item.price === cartItemData.price
+        ));
+  
+        if (existingIndex !== -1) {
+          currentFavor[existingIndex] = cartItemData;
+        } else {
+          currentFavor.push(cartItemData);
+        }
+        await setDoc(userDocRef, {favorites : currentFavor});
+        console.log('Item added to favorites successfully');
+        navigation.replace('BottomTabNavigator');
+
+      } else {
+        console.log('User is not authenticated.');
+      }
+    } catch (error) {
+      console.error('Error saving data', error);
+    }
+  };
   return (
     <SafeAreaView style={styleContainer}>
       <Image source={{uri: carDetails.image}} style={{width:SCREEN_WIDTH, height: 300,borderBottomLeftRadius: 20, borderBottomRightRadius: 20}}/>
@@ -212,6 +260,14 @@ const MyWishlistPage = ({route}): JSX.Element => {
             onPress={handelAddToCart}
           >
            Add to cart
+          </Button>
+          <Button
+            type='modal'
+            mode='orange'
+            textColor='#FFFFFF'
+            onPress={handelAddFavor}
+          >
+           Add to favorite
           </Button>
       </View>
     </SafeAreaView>

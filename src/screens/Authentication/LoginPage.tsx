@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Dimensions,
@@ -27,6 +27,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FIREBASE_AUTH } from '~/Firebase/UserData';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { PreferenceActionsContext } from '~/contextStore/ActionPreferenceContext';
 
 const LoginPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -51,6 +52,7 @@ const LoginPage = (): JSX.Element => {
   const [password, setPassword] = useState('');
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
+  const {getUserID} = useContext(PreferenceActionsContext);
   const auth = FIREBASE_AUTH;
   const handleSignIn = async () => {
     setLoading(true);
@@ -58,7 +60,8 @@ const LoginPage = (): JSX.Element => {
       const response = await signInWithEmailAndPassword(auth, email, password);
       const userName = response.user.displayName;
       await AsyncStorage.setItem('userName', userName);
-      const userId = response.user.uid; // or response.user.email
+      const userId = response.user.uid;
+      getUserID(userId);
       await AsyncStorage.setItem('userId', userId);
       navigation.navigate('BottomTabNavigator');
       console.log(response);

@@ -26,6 +26,7 @@ import { RootNavigatorNavProps } from '~/navigation/RootNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '~/base/Button';
 import { getAuth, signOut } from 'firebase/auth';
+import { PreferenceActionsContext, PreferenceContext } from '~/contextStore/ActionPreferenceContext';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -91,12 +92,17 @@ const SettingPage = (): JSX.Element => {
     };
     getUserName();
   }, []);
+  const {getNumberItem} = useContext(PreferenceActionsContext);
+  const {getTotalPrice} = useContext(PreferenceActionsContext);
   const handleLogout = async () => {
     try {
       const auth = getAuth();
       await signOut(auth);
       await AsyncStorage.removeItem('userId');
       await AsyncStorage.removeItem('cart');
+      await AsyncStorage.removeItem('cartFavor')
+      getNumberItem(0);
+      getTotalPrice(0);
       navigation.navigate('SplashPage');
     } catch (error) {
       console.error('Logout failed', error);

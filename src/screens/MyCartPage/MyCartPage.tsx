@@ -31,8 +31,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PreferenceActionsContext, PreferenceContext } from '~/contextStore/ActionPreferenceContext';
 import Button from '~/base/Button';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { FIREBASE_AUTH } from '~/Firebase/UserData';
+import { FIREBASE_AUTH, FIREBASE_DB } from '~/Firebase/UserData';
 import ButtonCustom from '~/base/ButtonCustom';
+import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -105,48 +106,49 @@ const MyCartPage = (): JSX.Element => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const cartData = await AsyncStorage.getItem('cart');
-        if (cartData) {
-          const cartItems = JSON.parse(cartData);
-          setCart(cartItems);
-          const total = calculateTotalPrice(cartItems);
-          getTotalPrice(total);
-        }
+        const cartCollectionRef = collection(FIREBASE_DB, 'cart');
+        const querySnapshot = await getDocs(cartCollectionRef);
+        const cartItems = [];
+        querySnapshot.forEach((doc) => {
+          const cartItem = doc.data();
+          cartItems.push(cartItem);
+        });
+        setCart(cartItems);
+        const total = calculateTotalPrice(cartItems);
+        getTotalPrice(total);
+        // getNumberItem(cartItems.length);
       } catch (error) {
         console.error('Error retrieving data', error);
       }
     };
-  
     fetchCart();
   }, []);
   
 
  //clear my cart if use different account
-const handleDelete = async (itemId) => {
-  const newCart = cart.filter(item => item.id !== itemId);
-  setCart(newCart);
-  getNumberItem(newCart.length);
-  await AsyncStorage.setItem('cart', JSON.stringify(newCart));
-  const total = calculateTotalPrice(newCart);
-  getTotalPrice(total);
-};
+// const handleDelete = async (itemId) => {
+//   const newCart = cart.filter(item => item.id !== itemId);
+//   setCart(newCart);
+//   getNumberItem(newCart.length);
+//   await AsyncStorage.setItem('cart', JSON.stringify(newCart));
+//   const total = calculateTotalPrice(newCart);
+//   getTotalPrice(total);
+// };
  //double click and delete
- const handleDoubleClick = (item) => {
-  let lastTap = null;
+ 
 
-  return () => {
-    const now = Date.now();
-    if (lastTap && (now - lastTap) < 300) { // 300ms between double taps
-      handleDelete(item.id);
-      lastTap = null;
-    } else {
-      lastTap = now;
-    }
-  };
-};
+
 const handleOrder = async () => {
   try {
-    await AsyncStorage.removeItem('cart');
+    const cartCollectionRef = collection(FIREBASE_DB, 'cart');
+    const querySnapshot = await getDocs(cartCollectionRef);
+    const deleteItems = [];
+    querySnapshot.forEach((doc) => {
+      const deleteItem = deleteDoc(doc.ref);
+      deleteItems.push(deleteItem);
+    });
+    setCart([]);
+    getTotalPrice(0);
     navigation.navigate('Check out');
     getNumberItem(0);
   } catch (error) {
@@ -174,7 +176,7 @@ const handleOrder = async () => {
        data={cart}
        keyExtractor={(item) => item.id}
        renderItem={({ item }) => (
-       <TouchableOpacity style={styles.cardView} onPress={handleDoubleClick(item)}>
+       <TouchableOpacity style={styles.cardView}>
          <View style={{
           flexDirection: 'row',
           paddingHorizontal: 10,
