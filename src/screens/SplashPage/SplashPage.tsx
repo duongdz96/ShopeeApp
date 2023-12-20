@@ -97,7 +97,7 @@ const SplashPage = (): JSX.Element => {
       <View style={styles.viewButton}>
         <Button
           type='modal'
-          onPress={()=>navigation.navigate('Sign Up')}
+          onPress={()=>navigation.navigate('Sign In')}
           mode='white'
           textColor='#ED4D2D'
           textStyle={{
